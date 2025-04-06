@@ -26,7 +26,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #243344;
 }
 
@@ -53,12 +53,11 @@ body {
     background-color: #baa5b2;
     color: white;
     text-decoration: none;
-    font-size: 30px;
+    font-size: 1.2rem;
     border-radius: 8px;
     box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
-
 .button:hover {
     background-color: #b9a4d5;
     transform: translateY(-5px);
@@ -74,9 +73,7 @@ body {
     margin-bottom: 10px;
 }
 
-.button {
-    font-size: 1.2rem; /* Scales better across devices */
-}
+
  @media (max-width: 600px) {
     .button {
         font-size: 1rem;
@@ -94,61 +91,51 @@ body {
         <a href="https://lemmy.ml/"
           class = "button">
           <img src="lemmy.png" alt="???">
-            <br>
           Lemmy
         </a>
         <a href="https://www.youtube.com/"
           class="button">
             <img src="youtube.png" alt="???">
-             <br>
           Youtube
         </a>
         <a href="https://www.nerdwallet.com/"
             class="button">
             <img src="nerdWallet.png" alt="???">
-             <br>
             Nerd Walleton
         </a>
         <a href="https://cad.onshape.com/signin?_gl=1*vs94r2*_gcl_au*MTk4NDI2MTczMy4xNzQzODEwNzgx#_ga=2.37111208.982060149.1743810783-1833321486.1743810781"
             class="button">
             <img src="onShape.png" alt="???">
-             <br>
             onShape
         </a>
         <a href="https://messages.google.com/web/u/0/conversations"
             class="button">
             <img src="messages.png" alt="???">
-             <br>
             Messages
         </a>
         <a href="https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-globalnav-goto"
             class="button">
             <img src="googleDrive.png" alt="???">
-             <br>
             Google Drive
         </a>
         <a href="https://notebooklm.google.com/?_gl=1*19983xu*_ga*OTAwMDUzODA1LjE3NDM4MTA5NzE.*_ga_W0LDH41ZCB*MTc0MzgxMDk3MS4xLjAuMTc0MzgxMDk3MS42MC4wLjA.&original_referer=https:%2F%2Fnotebooklm.google%23&pli=1"
             class="button">
             <img src="noteBookLM.png" alt="???">
-             <br>
             NoteBookLM
         </a>
         <a href="https://www.cheapshark.com/" 
             class="button">
             <img src="cheapShark.png" alt="???">
-             <br>
             Cheap Shark
         </a>
         <a href="https://calendar.google.com/calendar/u/0/r?pli=1"
             class="button">
             <img src="googleCalendar.png" alt="???">
-             <br>
             Google Calendar
         </a>
         <a href="https://mail.google.com/mail/u/0/#inbox" 
             class="button">
             <img src="gmail.png" alt="???">
-             <br>
             Gmail
         </a>
     </div>

@@ -33,11 +33,14 @@ body {
 /* Button container centered */
 .button-container {
     display: grid;
-    grid-template-columns: repeat(5, 320px); /* each column is 160px wide */
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 20px;
+    max-width: 1000px;
+    width: 90%;
     margin: 0 auto;
     text-align: center;
 }
+
 
 
 /* Buttons */
@@ -65,8 +68,24 @@ body {
     transform: translateY(2px);
 }
 
-img {
-    max-width: 250px;
+.button img {
+    max-width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.button {
+    font-size: 1.2rem; /* Scales better across devices */
+}
+ @media (max-width: 600px) {
+    .button {
+        font-size: 1rem;
+        padding: 15px;
+    }
+
+    .button img {
+        max-width: 80px;
+    }
 }
     </style>
 </head>

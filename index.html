@@ -30,19 +30,17 @@ body {
     background-color: #243344;
 }
 
-/* Button container with 2 rows and 5 columns */
+/* Button container centered */
 .button-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
-    grid-gap: 20px; /* Space between buttons */
-    width: 90%;
-    height:30%;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    max-width: 1000px; /* or set width: 800px; for a fixed size */
     margin: 0 auto;
-    padding:auto;
-    text-align:center;
+    text-align: center;
 }
 
-/* Style for the buttons */
+/* Buttons */
 .button {
     display: block;
     padding: 20px;
@@ -52,9 +50,8 @@ body {
     text-decoration: none;
     font-size: 30px;
     border-radius: 8px;
-    box-shadow: 2 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, transform 0.3s ease;
-
 }
 
 .button:hover {

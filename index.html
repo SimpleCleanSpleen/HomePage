@@ -80,15 +80,13 @@
         #weather-overlay-layer {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: flex-start;
             z-index: 2; pointer-events: none;
         }
 
-        .weather-sprite {
-            width: 18%;
-            max-width: 220px;
-            margin-top: 1%;
-            filter: drop-shadow(0 0 15px rgba(0,0,0,0.6));
+        .floating-overlay {
+            position: absolute;
+            filter: drop-shadow(8px 8px 0px rgba(0,0,0,0.5)) grayscale(20%) sepia(30%);
+            will-change: transform;
         }
 
         #character-layer {
@@ -190,8 +188,7 @@
 
         .app-link:hover { transform: scale(1.1) translateY(-5px); box-shadow: 10px 10px 0px rgba(0,0,0,0.6); }
         .app-link:hover::after { opacity: 1; }
-        .app-icon { width: 90px; height: 90px; object-fit: contain; border-radius: 12px; filter: grayscale(100%) sepia(30%) contrast(150%); transition: all 0.4s ease; }
-        .app-link:hover .app-icon { filter: grayscale(0%) sepia(0%); }
+        .app-icon { width: 90px; height: 90px; object-fit: contain; border-radius: 12px; transition: all 0.4s ease; }
 
         #debug-container {
             position: absolute;
@@ -204,7 +201,7 @@
         }
 
         #debug-menu {
-            display: none; /* Hidden by default */
+            display: none; 
             background: #e6dfcc;
             background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
             border: 4px solid #000;
@@ -298,28 +295,34 @@
             <a href="https://cad.onshape.com" target="_blank" class="app-link" data-title="OnShape"><img src="onShape.png" alt="OnShape" class="app-icon"></a>
             <a href="https://www.photopea.com" target="_blank" class="app-link" data-title="PhotoPea"><img src="photoPea.png" alt="PhotoPea" class="app-icon"></a>
             <a href="https://lemmy.world" target="_blank" class="app-link" data-title="Lemmy"><img src="lemmy.png" alt="Lemmy" class="app-icon"></a>
+            <a href="https://keep.google.com" target="_blank" class="app-link" data-title="Keep"><img src="Keep.png" alt="Keep" class="app-icon"></a>
+            <a href="https://chat.deepseek.com" target="_blank" class="app-link" data-title="DeepSeek"><img src="deepSeek.png" alt="DeepSeek" class="app-icon"></a>
+            <a href="https://www.google.com/android/find" target="_blank" class="app-link" data-title="Find Device"><img src="findMyAndroid.png" alt="Find Device" class="app-icon"></a>
+            <a href="http://192.168.40.149:8188" target="_blank" class="app-link" data-title="ComfyUI"><img src="comfy.png" alt="ComfyUI" class="app-icon"></a>
+            <a href="#" target="_blank" class="app-link" data-title="Home"><img src="home.png" alt="Home" class="app-icon"></a>
         </div>
     </div>
 
     <script>
-        // Exact filenames based on user specifications
         const ASSETS = {
             bgChilly: "Background_35-59°F (Chilly).jpeg",
             bgMild: "Background_60-69°F (Mild).jpeg",
             bgWarm: "Background_70-79°F (Warm).jpg",
-            bgHeatwave: "Background\t80°F+ (Heatwave).png", 
-            charFreezing: "Character Sprite\t<35°F (Freezing).png",
-            charChilly: "Character Sprite\t35-59°F (Chilly).png",
-            charWarm: "Character Sprite\t70-79°F (Warm).png",
-            charHeatwave: "Character Sprite\t80°F+ (Heatwave).png",
-            overlayHail: "Weather Overlay\tHail.png"
+            bgHeatwave: "Background_80°F+ (Heatwave).png", 
+            charFreezing: "Character Sprite_35°F (Freezing).png",
+            charChilly: "Character Sprite_35-59°F (Chilly).png",
+            charMild: "Character Sprite_60-69°F (Mild).png",
+            charWarm: "Character Sprite_70-79°F (Warm).png",
+            charHeatwave: "Character Sprite_80°F+ (Heatwave).png",
+            overlayHail: "Weather Overlay_Hail.png"
         };
 
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
+        let weatherEntities = []; // Array to track moving overlays
         let weatherType = 'clear';
-        let isTestingMode = false; // Flag to prevent fetch from overriding manual tests
+        let isTestingMode = false; 
 
         // Resize handler
         function resizeCanvas() {
@@ -337,16 +340,38 @@
                 this.reset();
             }
             reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * -canvas.height;
-                this.speed = (this.type === 'snow') ? Math.random() * 2 + 1 : Math.random() * 10 + 8;
-                this.size = (this.type === 'hail') ? Math.random() * 6 + 4 : Math.random() * 3 + 2;
-                this.wind = Math.random() * 3 - 1.5;
+                if (this.type === 'debris') {
+                    // Physics linked directly to active tornados!
+                    const tornados = weatherEntities.filter(e => e.type === 'tornado');
+                    if (tornados.length > 0) {
+                        const t = tornados[Math.floor(Math.random() * tornados.length)];
+                        // Calculate approximate center base of the tornado image
+                        const tWidth = canvas.width * (t.scale * 0.25); 
+                        this.x = t.x + (tWidth / 2) + (Math.random() * 100 - 50);
+                        this.y = canvas.height + (Math.random() * 50);
+                        this.speed = -(Math.random() * 12 + 4); // Blast upwards
+                        this.wind = Math.random() * 14 - 7; // Violent spin
+                        this.size = Math.random() * 8 + 3;
+                    } else {
+                        this.y = -100; // Hide if no tornados
+                    }
+                } else {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * -canvas.height;
+                    this.speed = (this.type === 'snow') ? Math.random() * 2 + 1 : Math.random() * 10 + 8;
+                    this.size = (this.type === 'hail') ? Math.random() * 6 + 4 : Math.random() * 3 + 2;
+                    this.wind = Math.random() * 3 - 1.5;
+                }
             }
             update() {
                 this.y += this.speed;
                 this.x += this.wind;
-                if (this.y > canvas.height) this.reset();
+                
+                if (this.type === 'debris') {
+                    if (this.y < canvas.height - 300) this.reset(); // Dissipate as it gets high
+                } else {
+                    if (this.y > canvas.height) this.reset();
+                }
             }
             draw() {
                 ctx.beginPath();
@@ -356,6 +381,13 @@
                     ctx.moveTo(this.x, this.y);
                     ctx.lineTo(this.x + (this.wind * 2), this.y + 25);
                     ctx.stroke();
+                } else if (this.type === 'debris') {
+                    // Draw blocky dust chunks for that classic animated look
+                    ctx.fillStyle = 'rgba(120, 110, 90, 0.8)'; 
+                    ctx.fillRect(this.x, this.y, this.size, this.size);
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(this.x, this.y, this.size, this.size);
                 } else {
                     ctx.fillStyle = 'rgba(230, 230, 230, 0.9)';
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -369,15 +401,28 @@
 
         function initParticles(type) {
             particles = [];
-            let count = (type === 'rain') ? 200 : (type === 'snow') ? 120 : 70;
+            let count = (type === 'rain') ? 200 : (type === 'snow') ? 120 : (type === 'hail') ? 70 : (type === 'debris') ? 150 : 0;
             for (let i = 0; i < count; i++) {
                 particles.push(new Particle(type));
             }
         }
 
+        // Main Animation Loop
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            if (['rain', 'snow', 'hail'].includes(weatherType)) {
+            
+            // Move our weather overlays
+            weatherEntities.forEach(ent => {
+                ent.x += ent.speed;
+                // Loop them back around the screen seamlessly
+                if (ent.x > window.innerWidth + 300) {
+                    ent.x = -400; 
+                }
+                ent.el.style.transform = `translateX(${ent.x}px)`;
+            });
+
+            // Draw particles
+            if (['rain', 'snow', 'hail', 'debris'].includes(weatherType)) {
                 particles.forEach(p => { p.update(); p.draw(); });
             }
             requestAnimationFrame(animate);
@@ -402,6 +447,29 @@
         setInterval(updateClock, 1000);
         updateClock();
 
+        // Spawn logic for weather entities
+        function spawnEntity(layer, src, yPos, scale, speed, type) {
+            let img = document.createElement('img');
+            img.src = src;
+            img.className = 'floating-overlay';
+            img.style.width = Math.floor(25 * scale) + 'vw';
+            img.style.top = yPos + '%';
+            
+            // Start at a random X coordinate on the screen
+            let startX = Math.random() * window.innerWidth;
+            img.style.transform = `translateX(${startX}px)`;
+            
+            layer.appendChild(img);
+            
+            weatherEntities.push({
+                el: img,
+                x: startX,
+                speed: speed,
+                scale: scale,
+                type: type
+            });
+        }
+
         function renderDashboardState(temp, weatherDesc, isTest = false) {
             document.getElementById('temp-display').innerText = temp + (isTest ? '°F (TEST)' : '°F');
             document.getElementById('desc-display').innerText = weatherDesc;
@@ -409,7 +477,6 @@
             let bgFile = '';
             let charFile = '';
 
-            // Temperature Based Rules
             if (temp >= 80) {
                 bgFile = ASSETS.bgHeatwave;
                 charFile = ASSETS.charHeatwave;
@@ -418,49 +485,62 @@
                 charFile = ASSETS.charWarm;
             } else if (temp >= 60) {
                 bgFile = ASSETS.bgMild;
-                charFile = ASSETS.charWarm; // Closest available character sprite
+                charFile = ASSETS.charMild; 
             } else if (temp >= 35) {
                 bgFile = ASSETS.bgChilly;
                 charFile = ASSETS.charChilly;
             } else {
-                bgFile = ASSETS.bgChilly; // Fallback background for extreme cold
+                bgFile = ASSETS.bgChilly; 
                 charFile = ASSETS.charFreezing;
             }
 
-            // Apply images cleanly utilizing encodeURIComponent to handle special characters (tabs/spaces)
-            document.getElementById('background-layer').style.backgroundImage = `url('${encodeURIComponent(bgFile)}')`;
-            document.getElementById('characters').src = encodeURIComponent(charFile);
+            document.getElementById('background-layer').style.backgroundImage = `url('${bgFile}')`;
+            document.getElementById('characters').src = charFile;
 
-            // Weather Overlay Logic
             const overlayLayer = document.getElementById('weather-overlay-layer');
             const fogLayer = document.getElementById('fog-layer');
             overlayLayer.innerHTML = '';
             fogLayer.style.opacity = '0';
+            weatherEntities = []; // Reset moving entities
             weatherType = 'clear';
 
             const descStr = weatherDesc.toLowerCase();
-            if (descStr.includes('rain')) {
+            
+            if (descStr.includes('tornado')) {
+                weatherType = 'debris';
+                // Spawn a fleet of moving tornados at different sizes and speeds
+                spawnEntity(overlayLayer, 'Weather Overlay_Tornado.png', -10, 1.4, 2.5, 'tornado');
+                spawnEntity(overlayLayer, 'Weather Overlay_Tornado.png', 5, 0.9, 1.8, 'tornado');
+                spawnEntity(overlayLayer, 'Weather Overlay_Tornado.png', -5, 1.8, 3.2, 'tornado');
+                initParticles('debris');
+                
+            } else if (descStr.includes('rain')) {
                 weatherType = 'rain';
-                overlayLayer.innerHTML = `<img src="${encodeURIComponent('Weather Overlay_Rain.png')}" class="weather-sprite">`;
+                spawnEntity(overlayLayer, 'Weather Overlay_Rain.png', -5, 1.1, 0.6, 'cloud');
+                spawnEntity(overlayLayer, 'Weather Overlay_Rain.png', 2, 0.8, 0.4, 'cloud');
+                spawnEntity(overlayLayer, 'Weather Overlay_Rain.png', -10, 1.3, 0.8, 'cloud');
                 initParticles('rain');
+                
             } else if (descStr.includes('snow')) {
                 weatherType = 'snow';
-                overlayLayer.innerHTML = `<img src="${encodeURIComponent('Weather Overlay_Snow.png')}" class="weather-sprite">`;
+                spawnEntity(overlayLayer, 'Weather Overlay_Snow.png', -5, 1.2, 0.5, 'cloud');
+                spawnEntity(overlayLayer, 'Weather Overlay_Snow.png', -2, 0.9, 0.3, 'cloud');
                 initParticles('snow');
+                
             } else if (descStr.includes('hail')) {
                 weatherType = 'hail';
-                overlayLayer.innerHTML = `<img src="${encodeURIComponent(ASSETS.overlayHail)}" class="weather-sprite">`;
+                spawnEntity(overlayLayer, ASSETS.overlayHail, -8, 1.4, 0.7, 'cloud');
+                spawnEntity(overlayLayer, ASSETS.overlayHail, 0, 1.0, 0.5, 'cloud');
                 initParticles('hail');
+                
             } else if (descStr.includes('fog') || descStr.includes('mist')) {
                 fogLayer.style.opacity = '0.7';
-            } else if (descStr.includes('tornado')) {
-                overlayLayer.innerHTML = `<img src="${encodeURIComponent('Weather Overlay_Tornado.png')}" class="weather-sprite">`;
             }
         }
 
         // Live Fetch Logic
         async function fetchLiveDashboard() {
-            if (isTestingMode) return; // Prevent live updates from overwriting manual tests
+            if (isTestingMode) return; 
 
             const errorDisplay = document.getElementById('error-display');
             try {
@@ -476,7 +556,6 @@
             }
         }
 
-        // Initialize and setup intervals
         fetchLiveDashboard();
         setInterval(fetchLiveDashboard, 60000);
 
@@ -486,7 +565,7 @@
         }
 
         function forceWeather(temp, desc) {
-            isTestingMode = true; // Suspend live fetching
+            isTestingMode = true; 
             document.getElementById('error-display').innerText = 'TEST MODE ACTIVE';
             document.getElementById('error-display').style.color = '#ff8800';
             document.getElementById('error-display').style.borderTopColor = '#ff8800';
@@ -500,7 +579,7 @@
             document.getElementById('error-display').innerText = '';
             document.getElementById('temp-display').innerText = 'WAITING...';
             document.getElementById('debug-menu').style.display = 'none';
-            fetchLiveDashboard(); // Immediately fetch real data
+            fetchLiveDashboard(); 
         }
 
     </script>

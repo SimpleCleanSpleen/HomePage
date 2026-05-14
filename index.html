@@ -76,11 +76,17 @@
             0%, 100% { transform: scale(1.02) translate(0, 0); }
             50% { transform: scale(1.02) translate(-2px, 2px); }
         }
+        
+        #particle-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2; pointer-events: none; /* Moved behind overlays */
+        }
 
         #weather-overlay-layer {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2; pointer-events: none;
+            z-index: 3; pointer-events: none;
         }
 
         .floating-overlay {
@@ -93,7 +99,7 @@
             position: absolute;
             bottom: 6%; 
             left: 5%; 
-            z-index: 3;
+            z-index: 4;
             transition: all 0.5s ease-in-out;
             pointer-events: none;
         }
@@ -109,11 +115,6 @@
             50% { transform: translateY(-12px); }
         }
 
-        #particle-canvas {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 4; pointer-events: none;
-        }
 
         #fog-layer {
             position: absolute;
@@ -238,13 +239,14 @@
         <!-- Stage / Cinematic Viewport -->
         <div id="stage">
             <div id="background-layer"></div>
+            <canvas id="particle-canvas"></canvas>
             <div id="weather-overlay-layer"></div>
             
             <div id="character-layer">
                 <img id="characters" src="" alt="Characters">
             </div>
             
-            <canvas id="particle-canvas"></canvas>
+            
             <div id="fog-layer"></div>
 
             <div id="info-plaque">
@@ -335,8 +337,9 @@
 
         // Particle Class
         class Particle {
-            constructor(type) {
+            constructor(type, targetCharacters = false) {
                 this.type = type;
+                this.targetCharacters = targetCharacters;
                 this.reset(true);
             }
             reset(isInit = false) {
@@ -355,6 +358,20 @@
                     } else {
                         this.y = -100; // Hide if no tornados
                     }
+                } else if (this.targetCharacters) {
+                    // Target area around characters
+                    const charRect = document.getElementById('characters').getBoundingClientRect();
+                    const stageRect = document.getElementById('stage').getBoundingClientRect();
+                    // Estimate character center relative to canvas
+                    const charX = charRect.left - stageRect.left + (charRect.width / 2);
+                    
+                    // Spread particles around character X
+                    this.x = charX + (Math.random() * 300 - 150); 
+                    if (isInit) {
+                        this.y = Math.random() * canvas.height;
+                    } else {
+                        this.y = Math.random() * -50 - 20; 
+                    }
                 } else {
                     const clouds = weatherEntities.filter(e => e.type === 'cloud');
                     if (clouds.length > 0) {
@@ -372,8 +389,15 @@
                         }
                     } else {
                         this.x = Math.random() * canvas.width;
-                        this.y = Math.random() * -canvas.height;
+                        if (isInit) {
+                           this.y = Math.random() * canvas.height; 
+                        } else {
+                           this.y = Math.random() * -50 - 20;
+                        }
                     }
+                }
+
+                if (this.type !== 'debris') {
                     this.speed = (this.type === 'snow') ? Math.random() * 2 + 1 : Math.random() * 10 + 8;
                     this.size = (this.type === 'hail') ? Math.random() * 6 + 4 : Math.random() * 3 + 2;
                     this.wind = Math.random() * 3 - 1.5;
@@ -417,9 +441,17 @@
 
         function initParticles(type) {
             particles = [];
-            let count = (type === 'rain') ? 200 : (type === 'snow') ? 120 : (type === 'hail') ? 70 : (type === 'debris') ? 150 : 0;
-            for (let i = 0; i < count; i++) {
-                particles.push(new Particle(type));
+            
+            if (type === 'debris') {
+                for (let i = 0; i < 150; i++) particles.push(new Particle(type));
+            } else if (['rain', 'snow', 'hail'].includes(type)) {
+                // Determine base counts based on type
+                let totalCount = (type === 'rain') ? 250 : (type === 'snow') ? 150 : 100;
+                let charCount = Math.floor(totalCount * 0.4); // 40% targeted at characters
+                let cloudCount = totalCount - charCount;
+                
+                for (let i = 0; i < cloudCount; i++) particles.push(new Particle(type, false));
+                for (let i = 0; i < charCount; i++) particles.push(new Particle(type, true));
             }
         }
 

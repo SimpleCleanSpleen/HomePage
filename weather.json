@@ -1,0 +1,1 @@
+{"temp": {{ $node["HTTP Request"].json.current_condition[0].temp_F }}, "weather": "{{ $node["HTTP Request"].json.current_condition[0].weatherDesc[0].value }}"}

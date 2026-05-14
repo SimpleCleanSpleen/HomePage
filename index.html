@@ -3,39 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lazy's Homepage</title>
+    <title>Lazy's Dashboard</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #243344;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            overflow-x: hidden;
         }
         
-        /* Canvas Styling */
+        /* Immersive Hero Section */
         #weatherCanvas {
-            width: 100%;
-            max-width: 1000px;
-            height: 300px;
-            background: #87CEEB;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            margin-bottom: 30px;
+            width: 100vw;
+            height: 450px;
             display: block;
+            background: linear-gradient(to bottom, #1e3c72, #2a5298);
         }
 
-        /* Button Container */
+        .content-wrap {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Modernized Grid */
         .button-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
-            width: 100%;
-            text-align: center;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+            margin-top: -40px; /* Slight overlap for depth */
+            position: relative;
+            z-index: 10;
         }
 
         .button {
@@ -43,121 +43,140 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            background-color: #baa5b2;
-            color: white;
+            aspect-ratio: 1 / 1;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
             text-decoration: none;
-            font-size: 1.2rem;
-            border-radius: 8px;
-            box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            animation: fadeInUp 0.5s ease both;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .button:hover { background-color: #b9a4d5; transform: translateY(-5px); }
-        .button:active { transform: translateY(2px); }
-        .button img { max-width: 80px; height: auto; margin-bottom: 10px; }
-
-        @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+        .button:hover { 
+            background: rgba(255, 255, 255, 0.15); 
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            border-color: #baa5b2;
         }
+
+        .button img { width: 45%; height: auto; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
 
         @media (max-width: 600px) {
-            .button { font-size: 1rem; padding: 15px; }
-            .button img { max-width: 60px; }
-            #weatherCanvas { height: 200px; }
+            #weatherCanvas { height: 300px; }
+            .button-container { grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: -20px; }
+            .button { font-size: 0.75rem; border-radius: 12px; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="weatherCanvas" width="1000" height="300"></canvas>
+    <canvas id="weatherCanvas"></canvas>
 
-    <div class="button-container">
-        <a href="https://web.stremio.com/" target="_blank" class="button"><img src="stremio.png" alt="Stremio">Stremio</a>
-        <a href="https://www.google.com/android/find/" target="_blank" class="button"><img src="findMyAndroid.png" alt="Find Android">Find Android</a>
-        <a href="https://lemmy.ml/" target="_blank" class="button"><img src="lemmy.png" alt="Lemmy">Lemmy</a>
-        <a href="https://www.youtube.com/" target="_blank" class="button"><img src="youtube.png" alt="Youtube">Youtube</a>
-        <a href="https://www.photopea.com/" target="_blank" class="button"><img src="photoPea.png" alt="Photopea">Photopea</a>
-        <a href="https://messages.google.com/web/" target="_blank" class="button"><img src="messages.png" alt="Messages">Messages</a>
-        <a href="https://www.cheapshark.com/" target="_blank" class="button"><img src="cheapShark.png" alt="Cheap Shark">Cheap Shark</a>
-        <a href="https://mail.google.com/" target="_blank" class="button"><img src="gmail.png" alt="Gmail">Gmail</a>
-        <a href="https://192.168.40.149:9443/" target="_blank" class="button"><img src="portainer.png" alt="Portainer">Portainer</a>
-        <a href="http://192.168.40.149:8096/" target="_blank" class="button"><img src="Jellyfin.png" alt="Jellyfin">Jellyfin</a>
-        <a href="http://192.168.40.149:3000/" target="_blank" class="button"><img src="llm.png" alt="Local AI">Local AI</a>
-        <a href="http://192.168.40.149:8188/" target="_blank" class="button"><img src="comfy.png" alt="Comfy UI">Comfy UI</a>
-        <a href="http://192.168.40.149:8123" target="_blank" class="button"><img src="home.png" alt="Home Assistant">Home Assistant</a>
-        <a href="https://keep.google.com/" target="_blank" class="button"><img src="Keep.png" alt="Keep">Google Keep</a>
-        <a href="https://drive.proton.me/" target="_blank" class="button"><img src="protonDrive.png" alt="Proton Drive">Proton Drive</a>
-        <a href="https://calendar.proton.me/" target="_blank" class="button"><img src="protonCalendar.png" alt="Proton Calendar">Proton Calendar</a>
-        <a href="https://mail.proton.me/" target="_blank" class="button"><img src="protonMail.png" alt="Proton Mail">Proton Mail</a>
+    <div class="content-wrap">
+        <div class="button-container">
+            <a href="https://web.stremio.com/" target="_blank" class="button"><img src="stremio.png" alt="">Stremio</a>
+            <a href="https://www.google.com/android/find/" target="_blank" class="button"><img src="findMyAndroid.png" alt="">Find Android</a>
+            <a href="https://lemmy.ml/" target="_blank" class="button"><img src="lemmy.png" alt="">Lemmy</a>
+            <a href="https://www.youtube.com/" target="_blank" class="button"><img src="youtube.png" alt="">YouTube</a>
+            <a href="https://www.photopea.com/" target="_blank" class="button"><img src="photoPea.png" alt="">Photopea</a>
+            <a href="https://messages.google.com/web/" target="_blank" class="button"><img src="messages.png" alt="">Messages</a>
+            <a href="https://www.cheapshark.com/" target="_blank" class="button"><img src="cheapShark.png" alt="">Cheap Shark</a>
+            <a href="https://mail.google.com/" target="_blank" class="button"><img src="gmail.png" alt="">Gmail</a>
+            <a href="https://192.168.40.149:9443/" target="_blank" class="button"><img src="portainer.png" alt="">Portainer</a>
+            <a href="http://192.168.40.149:8096/" target="_blank" class="button"><img src="Jellyfin.png" alt="">Jellyfin</a>
+            <a href="http://192.168.40.149:3000/" target="_blank" class="button"><img src="llm.png" alt="">Local AI</a>
+            <a href="http://192.168.40.149:8188/" target="_blank" class="button"><img src="comfy.png" alt="">Comfy UI</a>
+            <a href="http://192.168.40.149:8123" target="_blank" class="button"><img src="home.png" alt="">Home Assistant</a>
+            <a href="https://keep.google.com/" target="_blank" class="button"><img src="Keep.png" alt="">Keep</a>
+            <a href="https://drive.proton.me/" target="_blank" class="button"><img src="protonDrive.png" alt="">Drive</a>
+            <a href="https://calendar.proton.me/" target="_blank" class="button"><img src="protonCalendar.png" alt="">Calendar</a>
+            <a href="https://mail.proton.me/" target="_blank" class="button"><img src="protonMail.png" alt="">Proton Mail</a>
+        </div>
     </div>
 
     <script>
         const canvas = document.getElementById('weatherCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Fetch data from n8n output, fallback to defaults for testing
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = 450;
+            fetchWeatherData();
+        }
+
         async function fetchWeatherData() {
             try {
                 const response = await fetch('weather.json');
                 const data = await response.json();
                 drawScene(data.temp, data.weather);
-            } catch (error) {
-                console.log("No weather.json found, using defaults.");
-                drawScene(75, 'Clear'); // Default state
-            }
+            } catch (e) { drawScene(72, 'Clear'); }
         }
 
         function drawScene(temp, weather) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const w = canvas.width;
+            const h = canvas.height;
 
-            // 1. Sky & Weather
-            if (weather === 'Clear') {
-                ctx.fillStyle = '#87CEEB'; ctx.fillRect(0, 0, 1000, 300);
-                ctx.fillStyle = '#FFD700'; ctx.beginPath(); ctx.arc(150, 80, 40, 0, Math.PI * 2); ctx.fill();
-            } else if (weather === 'Cloudy') {
-                ctx.fillStyle = '#B0C4DE'; ctx.fillRect(0, 0, 1000, 300);
-            } else if (weather === 'Rain') {
-                ctx.fillStyle = '#778899'; ctx.fillRect(0, 0, 1000, 300);
-                ctx.strokeStyle = '#ADD8E6'; ctx.lineWidth = 2;
-                for(let i=0; i<100; i++) {
-                    let x = Math.random() * 1000; let y = Math.random() * 300;
-                    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 10, y + 20); ctx.stroke();
-                }
+            // 1. Sky Gradient
+            let skyGrd = ctx.createLinearGradient(0, 0, 0, h);
+            if (weather.includes('Rain') || weather.includes('Cloudy')) {
+                skyGrd.addColorStop(0, '#373B44'); skyGrd.addColorStop(1, '#4286f4');
+            } else {
+                skyGrd.addColorStop(0, '#1A2980'); skyGrd.addColorStop(1, '#26D0CE');
+            }
+            ctx.fillStyle = skyGrd; ctx.fillRect(0, 0, w, h);
+
+            // 2. Far Distant Hills
+            ctx.fillStyle = 'rgba(0, 50, 0, 0.2)';
+            ctx.beginPath(); ctx.moveTo(0, h * 0.7);
+            ctx.quadraticCurveTo(w * 0.5, h * 0.5, w, h * 0.7);
+            ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.fill();
+
+            // 3. The River (Glistening)
+            let waterGrd = ctx.createLinearGradient(w * 0.5, h * 0.6, w * 0.5, h);
+            waterGrd.addColorStop(0, '#1e3c72'); waterGrd.addColorStop(1, '#2a5298');
+            ctx.fillStyle = waterGrd;
+            ctx.beginPath(); ctx.moveTo(w * 0.4, h * 0.65);
+            ctx.lineTo(w, h * 0.65); ctx.lineTo(w, h); ctx.lineTo(w * 0.3, h); ctx.fill();
+
+            // 4. Bridge (Detailed Truss)
+            ctx.strokeStyle = '#2c3e50'; ctx.lineWidth = 3;
+            const bridgeY = h * 0.65;
+            ctx.beginPath(); ctx.moveTo(w * 0.45, bridgeY); ctx.lineTo(w, bridgeY); ctx.stroke();
+            for(let x = w * 0.45; x < w; x += 50) {
+                ctx.beginPath(); ctx.moveTo(x, bridgeY); ctx.lineTo(x+25, bridgeY - 30); ctx.lineTo(x+50, bridgeY); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(x+25, bridgeY - 30); ctx.lineTo(x+25, bridgeY); ctx.stroke();
             }
 
-            // 2. River & Bridge
-            ctx.fillStyle = '#4682B4'; // River
-            ctx.fillRect(400, 150, 600, 150);
-            ctx.strokeStyle = '#2F4F4F'; ctx.lineWidth = 4; // Bridge Truss
-            ctx.beginPath(); ctx.moveTo(400, 160); ctx.lineTo(1000, 160); ctx.stroke();
-            for(let i=420; i<1000; i+=60) {
-                ctx.beginPath(); ctx.moveTo(i, 160); ctx.lineTo(i+30, 120); ctx.lineTo(i+60, 160); ctx.stroke();
-            }
+            // 5. Foreground Bank
+            ctx.fillStyle = '#2d5a27';
+            ctx.beginPath(); ctx.moveTo(0, h * 0.6);
+            ctx.bezierCurveTo(w * 0.2, h * 0.6, w * 0.5, h * 0.8, w * 0.4, h);
+            ctx.lineTo(0, h); ctx.fill();
 
-            // 3. Riverbank & Path
-            ctx.fillStyle = '#228B22'; // Grass
-            ctx.beginPath(); ctx.moveTo(0, 150); ctx.lineTo(450, 150); ctx.lineTo(400, 300); ctx.lineTo(0, 300); ctx.fill();
-            ctx.fillStyle = '#A9A9A9'; // Path
-            ctx.beginPath(); ctx.moveTo(0, 220); ctx.quadraticCurveTo(200, 250, 420, 200); ctx.lineTo(430, 220); ctx.quadraticCurveTo(200, 270, 0, 240); ctx.fill();
+            // 6. Path
+            ctx.fillStyle = '#3d3d3d';
+            ctx.beginPath(); ctx.moveTo(0, h * 0.8);
+            ctx.quadraticCurveTo(w * 0.15, h * 0.85, w * 0.3, h);
+            ctx.lineTo(w * 0.2, h); ctx.quadraticCurveTo(w * 0.1, h * 0.88, 0, h * 0.85); ctx.fill();
 
-            // 4. Brick Tower
-            ctx.fillStyle = '#B22222'; ctx.fillRect(80, 80, 70, 120); // Brick body
-            ctx.fillStyle = '#2E8B57'; ctx.beginPath(); ctx.moveTo(70, 80); ctx.lineTo(115, 30); ctx.lineTo(160, 80); ctx.fill(); // Roof
-            ctx.fillStyle = '#FFF'; ctx.beginPath(); ctx.arc(115, 100, 15, 0, Math.PI * 2); ctx.fill(); // Clock
+            // 7. Tower (Stylized Brick)
+            ctx.fillStyle = '#8b0000'; ctx.fillRect(w * 0.05, h * 0.35, 60, 150);
+            ctx.fillStyle = '#1e4d2b'; ctx.beginPath(); ctx.moveTo(w * 0.04, h * 0.35); ctx.lineTo(w * 0.05 + 30, h * 0.2); ctx.lineTo(w * 0.05 + 70, h * 0.35); ctx.fill();
+            ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(w * 0.05 + 30, h * 0.42, 12, 0, Math.PI * 2); ctx.fill();
 
-            // 5. Jeremy Avatar
-            ctx.fillStyle = temp < 60 ? '#1E90FF' : '#FF4500'; // Jacket vs T-shirt
-            ctx.fillRect(250, 170, 20, temp < 60 ? 35 : 25); // Body
-            if(temp >= 60) { ctx.fillStyle = '#FFE4C4'; ctx.fillRect(250, 195, 20, 10); } // Exposed arms/legs
-            ctx.fillStyle = '#FFE4C4'; ctx.beginPath(); ctx.arc(260, 160, 12, 0, Math.PI * 2); ctx.fill(); // Head
-            ctx.fillStyle = '#000'; ctx.fillRect(252, 205, 6, 20); ctx.fillRect(262, 205, 6, 20); // Legs
+            // 8. Jeremy (Vector Style)
+            let charX = w * 0.12, charY = h * 0.78;
+            ctx.fillStyle = '#f3e5ab'; ctx.beginPath(); ctx.arc(charX, charY, 10, 0, Math.PI*2); ctx.fill(); // Head
+            ctx.fillStyle = temp < 60 ? '#104e8b' : '#d35400'; // Outfit
+            ctx.roundRect ? ctx.fill(new Path2D(`M${charX-8} ${charY+10} h16 v30 h-16 z`)) : ctx.fillRect(charX-8, charY+10, 16, 30); 
+            ctx.fillStyle = '#1a1a2e'; ctx.fillRect(charX-7, charY+40, 5, 15); ctx.fillRect(charX+2, charY+40, 5, 15); // Legs
         }
 
-        // Initialize
-        fetchWeatherData();
+        window.addEventListener('resize', resize);
+        resize();
     </script>
 </body>
 </html>

@@ -25,11 +25,11 @@
             align-items: center;
         }
 
-        /* Stage pinned to top - 60% height */
+        /* Stage pinned to top - fixed height */
         #stage {
             position: relative;
             width: 100%;
-            height: 60vh; 
+            height: 55vh; 
             overflow: hidden;
             background: #111;
             display: flex;
@@ -37,7 +37,7 @@
             align-items: flex-start;
         }
 
-        /* Layer 1: Background - Pinned top, subtle jostle only */
+        /* Layer 1: Background - Stabilized with very subtle jostle */
         #background-layer {
             position: absolute;
             top: 0;
@@ -49,12 +49,12 @@
             background-position: top center;
             transition: background-image 1s ease-in-out;
             z-index: 1;
-            animation: jostle 15s ease-in-out infinite;
+            animation: jostle 20s ease-in-out infinite;
         }
 
         @keyframes jostle {
-            0%, 100% { transform: scale(1.01) translate(0, 0); }
-            50% { transform: scale(1.01) translate(-3px, 3px); }
+            0%, 100% { transform: scale(1.005) translate(0, 0); }
+            50% { transform: scale(1.005) translate(-2px, 2px); }
         }
 
         /* Layer 2: Weather Overlays */
@@ -72,16 +72,16 @@
         }
 
         .weather-sprite {
-            width: 20%;
-            max-width: 250px;
+            width: 18%;
+            max-width: 220px;
             margin-top: 1%;
-            filter: drop-shadow(0 0 20px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 0 15px rgba(0,0,0,0.6));
         }
 
-        /* Layer 3: Characters - 2/3 of previous size (20vh) */
+        /* Layer 3: Characters - 2/3 size of previous version */
         #character-layer {
             position: absolute;
-            bottom: 8%; 
+            bottom: 6%; 
             left: 2%; 
             z-index: 3;
             transition: all 0.5s ease-in-out;
@@ -89,7 +89,7 @@
         }
 
         #characters {
-            height: 20vh; /* Reduced size */
+            height: 25vh; /* Perfect mid-size for the trail */
             filter: drop-shadow(8px 8px 15px rgba(0,0,0,0.8));
             animation: bounce 2.5s ease-in-out infinite;
         }
@@ -110,7 +110,7 @@
             pointer-events: none;
         }
 
-        /* Layer 5: Fog Layer - Static overlay */
+        /* Layer 5: Fog Layer */
         #fog-layer {
             position: absolute;
             top: 0;
@@ -124,23 +124,23 @@
             transition: opacity 3s ease-in-out;
         }
 
-        /* UI: Links Dock - Dynamic space filler */
+        /* UI: Links Dock - Dynamic Multi-row Grid */
         #links-dock {
             position: fixed;
             bottom: 0;
             z-index: 20;
             width: 100%;
-            height: 40vh; /* Fills remaining space */
+            height: 45vh; /* Fills the rest of the screen space */
             background: rgba(10, 10, 10, 0.98);
-            backdrop-filter: blur(25px);
+            backdrop-filter: blur(30px);
             border-top: 2px solid #444;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-content: center; /* Center rows vertically */
             flex-wrap: wrap; 
-            gap: 30px;
+            gap: 25px;
             overflow-y: auto;
-            padding: 20px;
+            padding: 30px;
         }
 
         .app-link {
@@ -149,25 +149,26 @@
         }
 
         .app-link:hover { transform: scale(1.1) translateY(-10px); }
-        .app-icon { width: 110px; height: 110px; filter: drop-shadow(0 5px 20px rgba(0,0,0,0.7)); }
+        .app-icon { width: 120px; height: 120px; filter: drop-shadow(0 5px 20px rgba(0,0,0,0.8)); }
 
         /* UI: Weather Info */
         #weather-info {
             position: absolute;
             top: 15px;
             right: 15px; 
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             color: #fff;
-            padding: 12px 25px;
-            border: 2px solid #555;
+            padding: 10px 25px;
+            border: 2px solid #666;
             z-index: 30;
             text-transform: uppercase;
             letter-spacing: 2px;
             text-align: right;
             border-radius: 2px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
-        #temp-display { font-size: 28px; font-weight: bold; }
+        #temp-display { font-size: 30px; font-weight: bold; }
         #desc-display { font-size: 14px; opacity: 0.8; }
         .error-box { color: #ff4444; font-size: 10px; }
     </style>
@@ -185,14 +186,14 @@
             <div id="fog-layer"></div>
 
             <div id="weather-info">
-                <div id="temp-display">SYNCING...</div>
+                <div id="temp-display">WAITING...</div>
                 <div id="desc-display">---</div>
                 <div id="error-display" class="error-box"></div>
             </div>
         </div>
 
         <div id="links-dock">
-            <!-- Restored original links + Local AI -->
+            <!-- Full original link suite with correct Local AI logo -->
             <a href="https://mail.google.com" target="_blank" class="app-link"><img src="gmail.png" class="app-icon" title="Gmail"></a>
             <a href="https://youtube.com" target="_blank" class="app-link"><img src="youtube.png" class="app-icon" title="YouTube"></a>
             <a href="https://drive.google.com" target="_blank" class="app-link"><img src="googleDrive.png" class="app-icon" title="Drive"></a>

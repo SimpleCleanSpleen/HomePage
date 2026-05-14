@@ -8,17 +8,16 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1a1a2e;
+            background-color: #05050a;
             color: #ffffff;
             overflow-x: hidden;
         }
         
-        /* Immersive Hero Section */
         #weatherCanvas {
             width: 100vw;
-            height: 450px;
+            height: 550px;
             display: block;
-            background: linear-gradient(to bottom, #1e3c72, #2a5298);
+            background: #000;
         }
 
         .content-wrap {
@@ -28,12 +27,11 @@
             width: 100%;
         }
 
-        /* Modernized Grid */
         .button-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 15px;
-            margin-top: -40px; /* Slight overlap for depth */
+            margin-top: -80px;
             position: relative;
             z-index: 10;
         }
@@ -44,30 +42,40 @@
             align-items: center;
             justify-content: center;
             aspect-ratio: 1 / 1;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            background: rgba(20, 20, 35, 0.8);
+            backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #e0e0e0;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
-            border-radius: 16px;
+            border-radius: 24px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            padding: 10px;
         }
 
         .button:hover { 
             background: rgba(255, 255, 255, 0.15); 
-            transform: translateY(-8px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             border-color: #baa5b2;
+            color: #fff;
         }
 
-        .button img { width: 45%; height: auto; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+        .button img { 
+            width: 52px; 
+            height: 52px; 
+            margin-bottom: 12px; 
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); 
+        }
 
         @media (max-width: 600px) {
-            #weatherCanvas { height: 300px; }
-            .button-container { grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: -20px; }
-            .button { font-size: 0.75rem; border-radius: 12px; }
+            #weatherCanvas { height: 400px; }
+            .button-container { grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: -40px; }
+            .button { font-size: 0.7rem; border-radius: 16px; }
+            .button img { width: 36px; height: 36px; }
         }
     </style>
 </head>
@@ -77,106 +85,177 @@
 
     <div class="content-wrap">
         <div class="button-container">
-            <a href="https://web.stremio.com/" target="_blank" class="button"><img src="stremio.png" alt="">Stremio</a>
-            <a href="https://www.google.com/android/find/" target="_blank" class="button"><img src="findMyAndroid.png" alt="">Find Android</a>
-            <a href="https://lemmy.ml/" target="_blank" class="button"><img src="lemmy.png" alt="">Lemmy</a>
-            <a href="https://www.youtube.com/" target="_blank" class="button"><img src="youtube.png" alt="">YouTube</a>
-            <a href="https://www.photopea.com/" target="_blank" class="button"><img src="photoPea.png" alt="">Photopea</a>
-            <a href="https://messages.google.com/web/" target="_blank" class="button"><img src="messages.png" alt="">Messages</a>
-            <a href="https://www.cheapshark.com/" target="_blank" class="button"><img src="cheapShark.png" alt="">Cheap Shark</a>
-            <a href="https://mail.google.com/" target="_blank" class="button"><img src="gmail.png" alt="">Gmail</a>
-            <a href="https://192.168.40.149:9443/" target="_blank" class="button"><img src="portainer.png" alt="">Portainer</a>
-            <a href="http://192.168.40.149:8096/" target="_blank" class="button"><img src="Jellyfin.png" alt="">Jellyfin</a>
-            <a href="http://192.168.40.149:3000/" target="_blank" class="button"><img src="llm.png" alt="">Local AI</a>
-            <a href="http://192.168.40.149:8188/" target="_blank" class="button"><img src="comfy.png" alt="">Comfy UI</a>
-            <a href="http://192.168.40.149:8123" target="_blank" class="button"><img src="home.png" alt="">Home Assistant</a>
-            <a href="https://keep.google.com/" target="_blank" class="button"><img src="Keep.png" alt="">Keep</a>
-            <a href="https://drive.proton.me/" target="_blank" class="button"><img src="protonDrive.png" alt="">Drive</a>
-            <a href="https://calendar.proton.me/" target="_blank" class="button"><img src="protonCalendar.png" alt="">Calendar</a>
-            <a href="https://mail.proton.me/" target="_blank" class="button"><img src="protonMail.png" alt="">Proton Mail</a>
+            <a href="https://web.stremio.com/" target="_blank" class="button"><img src="stremio.png" alt="🎥">Stremio</a>
+            <a href="https://www.google.com/android/find/" target="_blank" class="button"><img src="findMyAndroid.png" alt="📱">Find Android</a>
+            <a href="https://lemmy.ml/" target="_blank" class="button"><img src="lemmy.png" alt="🌿">Lemmy</a>
+            <a href="https://www.youtube.com/" target="_blank" class="button"><img src="youtube.png" alt="📺">YouTube</a>
+            <a href="https://www.photopea.com/" target="_blank" class="button"><img src="photoPea.png" alt="🎨">Photopea</a>
+            <a href="https://messages.google.com/web/" target="_blank" class="button"><img src="messages.png" alt="💬">Messages</a>
+            <a href="https://www.cheapshark.com/" target="_blank" class="button"><img src="cheapShark.png" alt="🦈">Cheap Shark</a>
+            <a href="https://mail.google.com/" target="_blank" class="button"><img src="gmail.png" alt="✉️">Gmail</a>
+            <a href="https://192.168.40.149:9443/" target="_blank" class="button"><img src="portainer.png" alt="🐳">Portainer</a>
+            <a href="http://192.168.40.149:8096/" target="_blank" class="button"><img src="Jellyfin.png" alt="🍿">Jellyfin</a>
+            <a href="http://192.168.40.149:3000/" target="_blank" class="button"><img src="llm.png" alt="🤖">Local AI</a>
+            <a href="http://192.168.40.149:8188/" target="_blank" class="button"><img src="comfy.png" alt="🧠">Comfy UI</a>
+            <a href="http://192.168.40.149:8123" target="_blank" class="button"><img src="home.png" alt="🏠">Home Assistant</a>
+            <a href="https://keep.google.com/" target="_blank" class="button"><img src="Keep.png" alt="📝">Keep</a>
+            <a href="https://drive.proton.me/" target="_blank" class="button"><img src="protonDrive.png" alt="☁️">Drive</a>
+            <a href="https://calendar.proton.me/" target="_blank" class="button"><img src="protonCalendar.png" alt="📅">Calendar</a>
+            <a href="https://mail.proton.me/" target="_blank" class="button"><img src="protonMail.png" alt="🛡️">Proton Mail</a>
         </div>
     </div>
 
     <script>
         const canvas = document.getElementById('weatherCanvas');
         const ctx = canvas.getContext('2d');
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = 450;
-            fetchWeatherData();
-        }
+        let weatherData = { temp: 75, weather: 'Clear' };
+        let frame = 0;
+        let breathParticles = [];
 
         async function fetchWeatherData() {
             try {
                 const response = await fetch('weather.json');
-                const data = await response.json();
-                drawScene(data.temp, data.weather);
-            } catch (e) { drawScene(72, 'Clear'); }
+                if (response.ok) weatherData = await response.json();
+            } catch (e) { console.log("Defaulting weather."); }
         }
 
-        function drawScene(temp, weather) {
-            const w = canvas.width;
-            const h = canvas.height;
-
-            // 1. Sky Gradient
+        function drawScene() {
+            frame++;
+            const w = canvas.width = window.innerWidth;
+            const h = canvas.height = (window.innerWidth < 600) ? 400 : 550;
+            const temp = weatherData.temp;
+            const isGloomy = weatherData.weather.includes('Rain') || weatherData.weather.includes('Cloud');
+            
+            // Background Logic
             let skyGrd = ctx.createLinearGradient(0, 0, 0, h);
-            if (weather.includes('Rain') || weather.includes('Cloudy')) {
-                skyGrd.addColorStop(0, '#373B44'); skyGrd.addColorStop(1, '#4286f4');
-            } else {
-                skyGrd.addColorStop(0, '#1A2980'); skyGrd.addColorStop(1, '#26D0CE');
-            }
+            if (isGloomy) { skyGrd.addColorStop(0, '#1e272e'); skyGrd.addColorStop(1, '#485460'); }
+            else { skyGrd.addColorStop(0, '#00d2ff'); skyGrd.addColorStop(1, '#3a7bd5'); }
             ctx.fillStyle = skyGrd; ctx.fillRect(0, 0, w, h);
 
-            // 2. Far Distant Hills
-            ctx.fillStyle = 'rgba(0, 50, 0, 0.2)';
-            ctx.beginPath(); ctx.moveTo(0, h * 0.7);
-            ctx.quadraticCurveTo(w * 0.5, h * 0.5, w, h * 0.7);
+            // Cumberland River (Wider and closer)
+            ctx.fillStyle = '#1e3c72';
+            ctx.beginPath();
+            ctx.moveTo(w * 0.1, h * 0.7);
+            ctx.bezierCurveTo(w * 0.4, h * 0.65, w * 0.7, h * 0.75, w, h * 0.68);
             ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.fill();
-
-            // 3. The River (Glistening)
-            let waterGrd = ctx.createLinearGradient(w * 0.5, h * 0.6, w * 0.5, h);
-            waterGrd.addColorStop(0, '#1e3c72'); waterGrd.addColorStop(1, '#2a5298');
-            ctx.fillStyle = waterGrd;
-            ctx.beginPath(); ctx.moveTo(w * 0.4, h * 0.65);
-            ctx.lineTo(w, h * 0.65); ctx.lineTo(w, h); ctx.lineTo(w * 0.3, h); ctx.fill();
-
-            // 4. Bridge (Detailed Truss)
-            ctx.strokeStyle = '#2c3e50'; ctx.lineWidth = 3;
-            const bridgeY = h * 0.65;
-            ctx.beginPath(); ctx.moveTo(w * 0.45, bridgeY); ctx.lineTo(w, bridgeY); ctx.stroke();
-            for(let x = w * 0.45; x < w; x += 50) {
-                ctx.beginPath(); ctx.moveTo(x, bridgeY); ctx.lineTo(x+25, bridgeY - 30); ctx.lineTo(x+50, bridgeY); ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(x+25, bridgeY - 30); ctx.lineTo(x+25, bridgeY); ctx.stroke();
+            
+            // Bridge (RJ Corman - Iconic Red/Black look)
+            ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 6;
+            const bY = h * 0.68;
+            ctx.beginPath(); ctx.moveTo(w * 0.2, bY); ctx.lineTo(w, bY); ctx.stroke();
+            for(let x = w * 0.25; x < w; x += 100) {
+                ctx.beginPath(); ctx.moveTo(x, bY); ctx.lineTo(x+50, bY-60); ctx.lineTo(x+100, bY); ctx.stroke();
+                ctx.strokeRect(x+45, bY-90, 10, 30); // Stylized bridge detail
             }
 
-            // 5. Foreground Bank
-            ctx.fillStyle = '#2d5a27';
+            // Foreground Path (Riverwalk)
+            ctx.fillStyle = '#2d3436';
             ctx.beginPath(); ctx.moveTo(0, h * 0.6);
-            ctx.bezierCurveTo(w * 0.2, h * 0.6, w * 0.5, h * 0.8, w * 0.4, h);
+            ctx.bezierCurveTo(w * 0.3, h * 0.6, w * 0.6, h * 0.9, w * 0.5, h);
             ctx.lineTo(0, h); ctx.fill();
 
-            // 6. Path
-            ctx.fillStyle = '#3d3d3d';
-            ctx.beginPath(); ctx.moveTo(0, h * 0.8);
-            ctx.quadraticCurveTo(w * 0.15, h * 0.85, w * 0.3, h);
-            ctx.lineTo(w * 0.2, h); ctx.quadraticCurveTo(w * 0.1, h * 0.88, 0, h * 0.85); ctx.fill();
+            // Clarksville Tower (Closer, more detail)
+            ctx.fillStyle = '#6d213c'; ctx.fillRect(w * 0.05, h * 0.1, 80, 250);
+            ctx.fillStyle = '#2d3436'; ctx.beginPath();
+            ctx.moveTo(w * 0.04, h * 0.1); ctx.lineTo(w * 0.05 + 40, h * 0.02); ctx.lineTo(w * 0.05 + 90, h * 0.1); ctx.fill();
+            ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(w * 0.05 + 40, h * 0.18, 15, 0, Math.PI*2); ctx.fill();
 
-            // 7. Tower (Stylized Brick)
-            ctx.fillStyle = '#8b0000'; ctx.fillRect(w * 0.05, h * 0.35, 60, 150);
-            ctx.fillStyle = '#1e4d2b'; ctx.beginPath(); ctx.moveTo(w * 0.04, h * 0.35); ctx.lineTo(w * 0.05 + 30, h * 0.2); ctx.lineTo(w * 0.05 + 70, h * 0.35); ctx.fill();
-            ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(w * 0.05 + 30, h * 0.42, 12, 0, Math.PI * 2); ctx.fill();
+            // --- CHARACTER LOGIC (CLOSE UP) ---
+            let charX = w * 0.22, charY = h * 0.78;
+            let shake = (temp < 32) ? Math.sin(frame * 0.5) * 2 : 0;
+            charX += shake;
 
-            // 8. Jeremy (Vector Style)
-            let charX = w * 0.12, charY = h * 0.78;
-            ctx.fillStyle = '#f3e5ab'; ctx.beginPath(); ctx.arc(charX, charY, 10, 0, Math.PI*2); ctx.fill(); // Head
-            ctx.fillStyle = temp < 60 ? '#104e8b' : '#d35400'; // Outfit
-            ctx.roundRect ? ctx.fill(new Path2D(`M${charX-8} ${charY+10} h16 v30 h-16 z`)) : ctx.fillRect(charX-8, charY+10, 16, 30); 
-            ctx.fillStyle = '#1a1a2e'; ctx.fillRect(charX-7, charY+40, 5, 15); ctx.fillRect(charX+2, charY+40, 5, 15); // Legs
+            // Skin tone
+            const skin = '#f3e5ab';
+            const beard = '#4a3728';
+
+            // 1. Head (Bald)
+            ctx.fillStyle = skin;
+            ctx.beginPath(); ctx.arc(charX, charY, 40, 0, Math.PI*2); ctx.fill();
+
+            // 2. Nose
+            ctx.strokeStyle = 'rgba(0,0,0,0.1)'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.arc(charX, charY + 5, 5, 0, Math.PI); ctx.stroke();
+
+            // 3. Beard
+            ctx.fillStyle = beard;
+            ctx.beginPath();
+            ctx.moveTo(charX - 38, charY + 10);
+            ctx.bezierCurveTo(charX - 30, charY + 55, charX + 30, charY + 55, charX + 38, charY + 10);
+            ctx.lineTo(charX + 35, charY + 5);
+            ctx.bezierCurveTo(charX + 10, charY + 25, charX - 10, charY + 25, charX - 35, charY + 5);
+            ctx.fill();
+
+            // 4. Signature Shades
+            ctx.fillStyle = '#000';
+            ctx.roundRect ? ctx.fill(new Path2D(`M${charX-35} ${charY-10} h28 v15 h-28 z`)) : ctx.fillRect(charX-35, charY-10, 28, 15);
+            ctx.roundRect ? ctx.fill(new Path2D(`M${charX+7} ${charY-10} h28 v15 h-28 z`)) : ctx.fillRect(charX+7, charY-10, 28, 15);
+            ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(charX-7, charY-5); ctx.lineTo(charX+7, charY-5); ctx.stroke();
+
+            // 5. Body & Outfit Tiering
+            const drawBody = (color, patterns = false) => {
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(charX - 45, charY + 45);
+                ctx.lineTo(charX + 45, charY + 45);
+                ctx.lineTo(charX + 60, h);
+                ctx.lineTo(charX - 60, h);
+                ctx.fill();
+                if(patterns) { // Skull pattern for Hawaiian shirt
+                    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                    for(let i=0; i<5; i++) {
+                        ctx.beginPath(); ctx.arc(charX-30 + (i*15), charY+70 + (i%2*20), 4, 0, Math.PI*2); ctx.fill();
+                    }
+                }
+            };
+
+            const drawLegs = (color, isShorts = false) => {
+                ctx.fillStyle = color;
+                // Simplified legs for close up
+                ctx.fillRect(charX - 40, h-30, 35, 30);
+                ctx.fillRect(charX + 5, h-30, 35, 30);
+            };
+
+            if (temp >= 80) { // Hawaiian Skulls
+                drawBody('#fff', true);
+                drawLegs('#2980b9', true); 
+            } else if (temp >= 70) { // White shirt + Jean Shorts
+                drawBody('#fff');
+                drawLegs('#2980b9', true);
+            } else if (temp >= 60) { // White shirt + Full Jeans
+                drawBody('#fff');
+                drawLegs('#2980b9');
+            } else if (temp >= 35) { // Zip up Hoodie
+                drawBody('#222'); // Black Hoodie
+                ctx.strokeStyle = '#555'; ctx.beginPath(); ctx.moveTo(charX, charY+45); ctx.lineTo(charX, h); ctx.stroke(); // Zip
+                drawLegs('#2980b9');
+            } else { // Heavy Jacket
+                drawBody('#1e272e');
+                drawLegs('#000');
+                // Cold breath effect
+                if (frame % 100 < 40) {
+                    breathParticles.push({x: charX + 5, y: charY + 30, r: 2, o: 0.5});
+                }
+            }
+
+            // Breath Animation
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            breathParticles.forEach((p, i) => {
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+                p.x += 0.5; p.y -= 0.5; p.r += 0.2; p.o -= 0.01;
+                if(p.o <= 0) breathParticles.splice(i, 1);
+            });
+
+            // UI Text
+            ctx.fillStyle = "white"; ctx.font = "bold 20px Segoe UI";
+            ctx.fillText(`${temp}°F - ${weatherData.weather}`, 25, 45);
+            
+            requestAnimationFrame(drawScene);
         }
 
-        window.addEventListener('resize', resize);
-        resize();
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; });
+        fetchWeatherData().then(() => drawScene());
+        setInterval(fetchWeatherData, 300000);
     </script>
 </body>
 </html>

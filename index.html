@@ -216,7 +216,7 @@
         @media (min-width: 1024px) {
             #links-dock {
                 flex-direction: row;
-                flex-wrap: wrap; /* CRITICAL FIX: Allows groups to drop to a new row instead of squishing */
+                flex-wrap: wrap; 
                 align-items: flex-start;
                 align-content: center;
                 justify-content: center;
@@ -229,7 +229,7 @@
                 padding: 3vh 1.5vw 1.5vh;
                 width: auto;
                 order: initial !important; 
-                gap: 1vw;
+                gap: 1.2vw;
             }
             .group-label {
                 display: block;
@@ -238,14 +238,21 @@
             }
         }
 
+        /* Uniform Icon Buttons */
         .app-link {
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             flex-shrink: 0; position: relative;
-            background: #fff; border-radius: 15px; border: 4px solid #000; 
-            padding: clamp(5px, 0.6vw, 10px); /* Responsive padding */
+            background: #e6dfcc; /* Unified cream background */
+            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+            border-radius: 16px; 
+            border: 4px solid #000; 
+            padding: 0; /* Removing padding forces the images to exact edges */
+            width: clamp(50px, 4.5vw, 80px); /* Strict uniform container width */
+            height: clamp(50px, 4.5vw, 80px); /* Strict uniform container height */
             box-shadow: 6px 6px 0px rgba(0,0,0,0.5);
             display: flex; justify-content: center; align-items: center;
             text-decoration: none;
+            overflow: hidden; /* Clips odd edges for perfect uniformity */
         }
 
         .app-link::after {
@@ -256,6 +263,7 @@
             text-shadow: none; opacity: 0; transition: opacity 0.3s ease;
             pointer-events: none; text-align: center; width: 90%;
             word-wrap: break-word; line-height: 1.2;
+            z-index: 2;
         }
 
         .app-link:hover { transform: scale(1.1) translateY(-5px); box-shadow: 10px 10px 0px rgba(0,0,0,0.6); }
@@ -263,10 +271,11 @@
         .app-link:hover .app-icon { opacity: 0.15; filter: grayscale(100%); transform: scale(0.9); }
         
         .app-icon { 
-            /* Tweaked the scaling values down slightly for laptop screens */
-            width: clamp(40px, 3.8vw, 75px); 
-            height: clamp(40px, 3.8vw, 75px); 
-            object-fit: contain; border-radius: 8px; transition: all 0.3s ease; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; /* Stretches/crops every image to fill the square identically */
+            transform: scale(1.1); /* Slight zoom crops out baked-in white borders on some PNGs */
+            transition: all 0.3s ease; 
         }
 
         #debug-container {
@@ -315,7 +324,6 @@
 <body>
     <div id="dashboard-container">
         
-        <!-- Stage / Cinematic Viewport -->
         <div id="stage">
             <div id="background-layer"></div>
             <canvas id="particle-canvas"></canvas>
@@ -334,7 +342,6 @@
                 <div id="error-display" class="error-box"></div>
             </div>
 
-            <!-- Developer Debug Controls -->
             <div id="debug-container">
                 <div id="debug-menu">
                     <h3>Weather Tester</h3>
@@ -355,7 +362,6 @@
             </div>
         </div>
 
-        <!-- App Links Dock -->
         <div id="links-dock">
             
             <div class="dock-group group-google">
@@ -450,22 +456,15 @@
                     const clouds = weatherEntities.filter(e => e.type === 'cloud');
                     if (clouds.length > 0) {
                         const c = clouds[Math.floor(Math.random() * clouds.length)];
-                        // Spread particles across the width of the cloud
                         const cWidth = (canvas.width / 100) * (25 * c.scale);
                         this.x = c.x + (Math.random() * cWidth);
                         
-                        // Start particle inside the visual cloud bounds
-                        // Getting the exact bounds is hard without querying the DOM,
-                        // so we approximate based on the cloud's top % and the screen height.
-                        // Assuming the cloud graphic takes up roughly 15-20% of the screen height.
                         const cloudTopPx = (parseFloat(c.el.style.top) / 100) * canvas.height;
                         const cloudBottomPx = cloudTopPx + (canvas.height * 0.15 * c.scale); 
 
                         if (isInit) {
-                            // On init, spread from inside the cloud down to the bottom
                             this.y = cloudTopPx + (Math.random() * (canvas.height - cloudTopPx));
                         } else {
-                            // On reset, spawn somewhere inside the "fluffy" part of the cloud
                             this.y = cloudTopPx + (Math.random() * (cloudBottomPx - cloudTopPx)); 
                         }
                     } else {
@@ -504,7 +503,6 @@
             draw() {
                 ctx.beginPath();
                 if (this.type === 'rain') {
-                    // Increased opacity and width for better visibility
                     ctx.strokeStyle = 'rgba(200, 200, 200, 0.95)';
                     ctx.lineWidth = 4;
                     ctx.moveTo(this.x, this.y);
@@ -517,9 +515,7 @@
                     ctx.lineWidth = 1;
                     ctx.strokeRect(this.x, this.y, this.size, this.size);
                 } else {
-                    // Increased opacity and added a slightly thicker stroke for snow/hail
                     ctx.fillStyle = 'rgba(230, 230, 230, 0.95)';
-                    // Make snow slightly larger so it's easier to see
                     const drawSize = this.type === 'snow' ? this.size * 1.5 : this.size;
                     ctx.arc(this.x, this.y, drawSize, 0, Math.PI * 2);
                     ctx.fill();
@@ -536,10 +532,7 @@
             if (type === 'debris') {
                 for (let i = 0; i < 150; i++) particles.push(new Particle(type));
             } else if (['rain', 'snow', 'hail'].includes(type)) {
-                // Increased the total count for all weather types
                 let totalCount = (type === 'rain') ? 500 : (type === 'snow') ? 400 : 250;
-                
-                // Keep the ratio: 40% general, 60% dropping from clouds
                 let generalCount = Math.floor(totalCount * 0.4); 
                 let cloudCount = totalCount - generalCount;
                 

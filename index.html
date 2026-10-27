@@ -208,9 +208,11 @@
 
         /* Order for small screens: Homelab first */
         .group-homelab { order: 1; }
-        .group-google { order: 2; }
-        .group-proton { order: 3; }
-        .group-misc { order: 4; }
+        .group-media { order: 2; }
+        .group-ai { order: 3; }
+        .group-google { order: 4; }
+        .group-proton { order: 5; }
+        .group-misc { order: 6; }
 
         /* Layout for large screens */
         @media (min-width: 1024px) {
@@ -371,7 +373,6 @@
                 <a href="https://drive.google.com" target="_blank" class="app-link" data-title="Drive"><img src="googleDrive.png" alt="Drive" class="app-icon"></a>
                 <a href="https://calendar.google.com" target="_blank" class="app-link" data-title="Calendar"><img src="googleCalendar.png" alt="Calendar" class="app-icon"></a>
                 <a href="https://messages.google.com" target="_blank" class="app-link" data-title="Messages"><img src="messages.png" alt="Messages" class="app-icon"></a>
-                <a href="https://notebooklm.google.com" target="_blank" class="app-link" data-title="NotebookLM"><img src="noteBookLM.png" alt="Notebook" class="app-icon"></a>
                 <a href="https://keep.google.com" target="_blank" class="app-link" data-title="Keep"><img src="Keep.png" alt="Keep" class="app-icon"></a>
                 <a href="https://www.google.com/android/find" target="_blank" class="app-link" data-title="Find Device"><img src="findMyAndroid.png" alt="Find Device" class="app-icon"></a>
             </div>
@@ -386,11 +387,27 @@
             <div class="dock-group group-homelab">
                 <div class="group-label">HOMELAB</div>
                 <a href="https://192.168.40.149:9443/#!/home" target="_blank" class="app-link" data-title="Portainer"><img src="portainer.png" alt="Portainer" class="app-icon"></a>
-                <a href="http://192.168.40.149:8096" target="_blank" class="app-link" data-title="Jellyfin"><img src="Jellyfin.png" alt="Jellyfin" class="app-icon"></a>
-                <a href="http://192.168.40.149:3000" target="_blank" class="app-link" data-title="Local AI"><img src="llm.png" alt="Local AI" class="app-icon"></a>
-                <a href="https://web.stremio.com" target="_blank" class="app-link" data-title="Stremio"><img src="stremio.png" alt="Stremio" class="app-icon"></a>
                 <a href="http://192.168.40.149:5678" target="_blank" class="app-link" data-title="n8n"><img src="n8n.png" alt="n8n" class="app-icon"></a>
-                <a href="#" target="_blank" class="app-link" data-title="Home"><img src="home.png" alt="Home" class="app-icon"></a>
+                <a href="http://192.168.40.149:3001" target="_blank" class="app-link" data-title="Uptime Kuma"><img src="uptimeKuma.svg" alt="Uptime Kuma" class="app-icon"></a>
+            </div>
+
+            <div class="dock-group group-media">
+                <div class="group-label">MEDIA</div>
+                <a href="http://192.168.40.149:8096" target="_blank" class="app-link" data-title="Jellyfin"><img src="Jellyfin.png" alt="Jellyfin" class="app-icon"></a>
+                <a href="http://192.168.40.149:3579" target="_blank" class="app-link" data-title="Ombi"><img src="ombi.svg" alt="Ombi" class="app-icon"></a>
+                <a href="http://192.168.40.149:8686" target="_blank" class="app-link" data-title="Lidarr"><img src="lidarr.svg" alt="Lidarr" class="app-icon"></a>
+                <a href="http://192.168.40.149:3030" target="_blank" class="app-link" data-title="Lidarr Requester"><img src="lidarrRequester.svg" alt="Lidarr Requester" class="app-icon"></a>
+                <a href="http://192.168.40.149:9696" target="_blank" class="app-link" data-title="Prowlarr"><img src="prowlarr.svg" alt="Prowlarr" class="app-icon"></a>
+                <a href="http://192.168.40.149:6500" target="_blank" class="app-link" data-title="RDT Client"><img src="rdtClient.svg" alt="RDT Client" class="app-icon"></a>
+                <a href="https://web.stremio.com" target="_blank" class="app-link" data-title="Stremio"><img src="stremio.png" alt="Stremio" class="app-icon"></a>
+            </div>
+
+            <div class="dock-group group-ai">
+                <div class="group-label">AI</div>
+                <a href="https://claude.ai" target="_blank" class="app-link" data-title="Claude"><img src="claude.svg" alt="Claude" class="app-icon"></a>
+                <a href="https://gemini.google.com" target="_blank" class="app-link" data-title="Gemini"><img src="gemini.svg" alt="Gemini" class="app-icon"></a>
+                <a href="https://chat.deepseek.com" target="_blank" class="app-link" data-title="DeepSeek"><img src="deepSeek.png" alt="DeepSeek" class="app-icon"></a>
+                <a href="http://192.168.40.149:3000" target="_blank" class="app-link" data-title="Local AI"><img src="llm.png" alt="Local AI" class="app-icon"></a>
             </div>
 
             <div class="dock-group group-misc">

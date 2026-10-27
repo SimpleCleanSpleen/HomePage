@@ -171,7 +171,7 @@
             overflow-y: auto; overflow-x: hidden;
             padding: 2vh 2vw; box-sizing: border-box;
             box-shadow: inset 0 20px 30px -10px rgba(0,0,0,0.9);
-            gap: 20px;
+            gap: 6px;
         }
 
         #links-dock::-webkit-scrollbar { width: 16px; }
@@ -184,7 +184,7 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 15px;
-            padding: 15px;
+            padding: 8px;
             border: 3px dashed transparent;
             background: transparent;
             position: relative;
@@ -206,7 +206,7 @@
             letter-spacing: 2px;
         }
 
-        /* Order for small screens: Homelab first */
+        /* Group order: Homelab, Media, AI on top; Google, Proton, Misc below */
         .group-homelab { order: 1; }
         .group-media { order: 2; }
         .group-ai { order: 3; }
@@ -220,18 +220,19 @@
                 flex-direction: row;
                 flex-wrap: wrap; 
                 align-items: flex-start;
-                align-content: center;
+                align-content: flex-start;
+                align-content: safe center; /* never push the top row out of scroll reach */
                 justify-content: center;
-                gap: 2vw;
+                row-gap: 3vh;
+                column-gap: 2vw;
             }
             .dock-group {
                 border-color: #444;
                 background: rgba(0,0,0,0.2);
                 border-radius: 15px;
-                padding: 3vh 1.5vw 1.5vh;
+                padding: 2.5vh 1.5vw 1.5vh;
                 width: auto;
-                order: initial !important; 
-                gap: 1.2vw;
+                gap: 1vw;
             }
             .group-label {
                 display: block;
@@ -249,8 +250,8 @@
             border-radius: 16px; 
             border: 4px solid #000; 
             padding: 0; /* Removing padding forces the images to exact edges */
-            width: clamp(50px, 4.5vw, 80px); /* Strict uniform container width */
-            height: clamp(50px, 4.5vw, 80px); /* Strict uniform container height */
+            width: clamp(44px, min(4vw, 8vh), 80px); /* Strict uniform container width, capped by screen height */
+            height: clamp(44px, min(4vw, 8vh), 80px); /* Strict uniform container height */
             box-shadow: 6px 6px 0px rgba(0,0,0,0.5);
             display: flex; justify-content: center; align-items: center;
             text-decoration: none;
@@ -368,53 +369,53 @@
             
             <div class="dock-group group-google">
                 <div class="group-label">GOOGLE SERVICES</div>
-                <a href="https://mail.google.com" target="_blank" class="app-link" data-title="Gmail"><img src="gmail.png" alt="Gmail" class="app-icon"></a>
-                <a href="https://youtube.com" target="_blank" class="app-link" data-title="YouTube"><img src="youtube.png" alt="YouTube" class="app-icon"></a>
-                <a href="https://drive.google.com" target="_blank" class="app-link" data-title="Drive"><img src="googleDrive.png" alt="Drive" class="app-icon"></a>
-                <a href="https://calendar.google.com" target="_blank" class="app-link" data-title="Calendar"><img src="googleCalendar.png" alt="Calendar" class="app-icon"></a>
-                <a href="https://messages.google.com" target="_blank" class="app-link" data-title="Messages"><img src="messages.png" alt="Messages" class="app-icon"></a>
-                <a href="https://keep.google.com" target="_blank" class="app-link" data-title="Keep"><img src="Keep.png" alt="Keep" class="app-icon"></a>
-                <a href="https://www.google.com/android/find" target="_blank" class="app-link" data-title="Find Device"><img src="findMyAndroid.png" alt="Find Device" class="app-icon"></a>
+                <a href="https://mail.google.com" target="_blank" class="app-link" data-title="Gmail"><img src="gmail.svg" alt="Gmail" class="app-icon"></a>
+                <a href="https://youtube.com" target="_blank" class="app-link" data-title="YouTube"><img src="youtube.svg" alt="YouTube" class="app-icon"></a>
+                <a href="https://drive.google.com" target="_blank" class="app-link" data-title="Drive"><img src="googleDrive.svg" alt="Drive" class="app-icon"></a>
+                <a href="https://calendar.google.com" target="_blank" class="app-link" data-title="Calendar"><img src="googleCalendar.svg" alt="Calendar" class="app-icon"></a>
+                <a href="https://messages.google.com" target="_blank" class="app-link" data-title="Messages"><img src="messages.svg" alt="Messages" class="app-icon"></a>
+                <a href="https://keep.google.com" target="_blank" class="app-link" data-title="Keep"><img src="Keep.svg" alt="Keep" class="app-icon"></a>
+                <a href="https://www.google.com/android/find" target="_blank" class="app-link" data-title="Find Device"><img src="findMyAndroid.svg" alt="Find Device" class="app-icon"></a>
             </div>
 
             <div class="dock-group group-proton">
                 <div class="group-label">PROTON SERVICES</div>
-                <a href="https://mail.proton.me" target="_blank" class="app-link" data-title="ProtonMail"><img src="protonMail.png" alt="ProtonMail" class="app-icon"></a>
-                <a href="https://drive.proton.me" target="_blank" class="app-link" data-title="ProtonDrive"><img src="protonDrive.png" alt="ProtonDrive" class="app-icon"></a>
-                <a href="https://calendar.proton.me" target="_blank" class="app-link" data-title="ProtonCalendar"><img src="protonCalendar.png" alt="ProtonCalendar" class="app-icon"></a>
+                <a href="https://mail.proton.me" target="_blank" class="app-link" data-title="ProtonMail"><img src="protonMail.svg" alt="ProtonMail" class="app-icon"></a>
+                <a href="https://drive.proton.me" target="_blank" class="app-link" data-title="ProtonDrive"><img src="protonDrive.svg" alt="ProtonDrive" class="app-icon"></a>
+                <a href="https://calendar.proton.me" target="_blank" class="app-link" data-title="ProtonCalendar"><img src="protonCalendar.svg" alt="ProtonCalendar" class="app-icon"></a>
             </div>
 
             <div class="dock-group group-homelab">
                 <div class="group-label">HOMELAB</div>
-                <a href="https://192.168.40.149:9443/#!/home" target="_blank" class="app-link" data-title="Portainer"><img src="portainer.png" alt="Portainer" class="app-icon"></a>
-                <a href="http://192.168.40.149:5678" target="_blank" class="app-link" data-title="n8n"><img src="n8n.png" alt="n8n" class="app-icon"></a>
+                <a href="https://192.168.40.149:9443/#!/home" target="_blank" class="app-link" data-title="Portainer"><img src="portainer.svg" alt="Portainer" class="app-icon"></a>
+                <a href="http://192.168.40.149:5678" target="_blank" class="app-link" data-title="n8n"><img src="n8n.svg" alt="n8n" class="app-icon"></a>
                 <a href="http://192.168.40.149:3001" target="_blank" class="app-link" data-title="Uptime Kuma"><img src="uptimeKuma.svg" alt="Uptime Kuma" class="app-icon"></a>
             </div>
 
             <div class="dock-group group-media">
                 <div class="group-label">MEDIA</div>
-                <a href="http://192.168.40.149:8096" target="_blank" class="app-link" data-title="Jellyfin"><img src="Jellyfin.png" alt="Jellyfin" class="app-icon"></a>
+                <a href="http://192.168.40.149:8096" target="_blank" class="app-link" data-title="Jellyfin"><img src="Jellyfin.svg" alt="Jellyfin" class="app-icon"></a>
                 <a href="http://192.168.40.149:3579" target="_blank" class="app-link" data-title="Ombi"><img src="ombi.svg" alt="Ombi" class="app-icon"></a>
                 <a href="http://192.168.40.149:8686" target="_blank" class="app-link" data-title="Lidarr"><img src="lidarr.svg" alt="Lidarr" class="app-icon"></a>
                 <a href="http://192.168.40.149:3030" target="_blank" class="app-link" data-title="Lidarr Requester"><img src="lidarrRequester.svg" alt="Lidarr Requester" class="app-icon"></a>
                 <a href="http://192.168.40.149:9696" target="_blank" class="app-link" data-title="Prowlarr"><img src="prowlarr.svg" alt="Prowlarr" class="app-icon"></a>
                 <a href="http://192.168.40.149:6500" target="_blank" class="app-link" data-title="RDT Client"><img src="rdtClient.svg" alt="RDT Client" class="app-icon"></a>
-                <a href="https://web.stremio.com" target="_blank" class="app-link" data-title="Stremio"><img src="stremio.png" alt="Stremio" class="app-icon"></a>
+                <a href="https://web.stremio.com" target="_blank" class="app-link" data-title="Stremio"><img src="stremio.svg" alt="Stremio" class="app-icon"></a>
             </div>
 
             <div class="dock-group group-ai">
                 <div class="group-label">AI</div>
                 <a href="https://claude.ai" target="_blank" class="app-link" data-title="Claude"><img src="claude.svg" alt="Claude" class="app-icon"></a>
                 <a href="https://gemini.google.com" target="_blank" class="app-link" data-title="Gemini"><img src="gemini.svg" alt="Gemini" class="app-icon"></a>
-                <a href="https://chat.deepseek.com" target="_blank" class="app-link" data-title="DeepSeek"><img src="deepSeek.png" alt="DeepSeek" class="app-icon"></a>
-                <a href="http://192.168.40.149:3000" target="_blank" class="app-link" data-title="Local AI"><img src="llm.png" alt="Local AI" class="app-icon"></a>
+                <a href="https://chat.deepseek.com" target="_blank" class="app-link" data-title="DeepSeek"><img src="deepSeek.svg" alt="DeepSeek" class="app-icon"></a>
+                <a href="http://192.168.40.149:3000" target="_blank" class="app-link" data-title="Local AI"><img src="llm.svg" alt="Local AI" class="app-icon"></a>
             </div>
 
             <div class="dock-group group-misc">
                 <div class="group-label">MISC</div>
-                <a href="https://www.cheapshark.com" target="_blank" class="app-link" data-title="CheapShark"><img src="cheapShark.png" alt="CheapShark" class="app-icon"></a>
-                <a href="https://www.photopea.com" target="_blank" class="app-link" data-title="PhotoPea"><img src="photoPea.png" alt="PhotoPea" class="app-icon"></a>
-                <a href="https://lemmy.world" target="_blank" class="app-link" data-title="Lemmy"><img src="lemmy.png" alt="Lemmy" class="app-icon"></a>
+                <a href="https://www.cheapshark.com" target="_blank" class="app-link" data-title="CheapShark"><img src="cheapShark.svg" alt="CheapShark" class="app-icon"></a>
+                <a href="https://www.photopea.com" target="_blank" class="app-link" data-title="PhotoPea"><img src="photoPea.svg" alt="PhotoPea" class="app-icon"></a>
+                <a href="https://lemmy.world" target="_blank" class="app-link" data-title="Lemmy"><img src="lemmy.svg" alt="Lemmy" class="app-icon"></a>
             </div>
 
         </div>

@@ -138,11 +138,11 @@
 
         #info-plaque {
             position: absolute;
-            top: 25px; right: 25px; 
+            top: clamp(10px, 2.5vh, 25px); right: clamp(10px, 1.5vw, 25px);
             background: #e6dfcc;
             background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
             color: #1a1a1a;
-            padding: 15px 30px;
+            padding: clamp(6px, 1.4vh, 15px) clamp(12px, 1.8vw, 30px);
             border: 5px solid #000;
             border-radius: 15px;
             z-index: 30;
@@ -154,9 +154,9 @@
             transform: rotate(2deg);
         }
 
-        #time-display { font-size: 20px; font-weight: bold; border-bottom: 3px dashed #000; padding-bottom: 8px; margin-bottom: 5px; }
-        #temp-display { font-size: 42px; font-weight: bold; letter-spacing: -2px; }
-        #desc-display { font-size: 16px; font-weight: bold; }
+        #time-display { font-size: clamp(12px, min(1.2vw, 2.2vh), 20px); font-weight: bold; border-bottom: 3px dashed #000; padding-bottom: 8px; margin-bottom: 5px; }
+        #temp-display { font-size: clamp(22px, min(2.6vw, 4.6vh), 42px); font-weight: bold; letter-spacing: -2px; }
+        #desc-display { font-size: clamp(11px, min(1vw, 1.8vh), 16px); font-weight: bold; }
         .error-box { color: #cc0000; font-size: 12px; margin-top: 5px; font-weight: bold; }
 
         /* Links Dock - Grouped Layout */
@@ -283,42 +283,56 @@
 
         #debug-container {
             position: absolute;
-            bottom: 25px;
-            right: 25px;
-            z-index: 1000; 
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            pointer-events: auto; 
+            bottom: clamp(10px, 2.5vh, 25px);
+            right: clamp(10px, 1.5vw, 25px);
+            z-index: 1000;
+            pointer-events: auto;
         }
 
+        /* Opens to the LEFT of the gear and is capped to the stage height (55vh), so it can
+           never run off the top of the scene; scrolls internally on short screens. */
         #debug-menu {
-            display: none; 
+            display: none;
+            position: absolute;
+            right: calc(100% + 12px);
+            bottom: 0;
+            width: clamp(220px, 20vw, 300px);
+            max-height: calc(55vh - 2 * clamp(10px, 2.5vh, 25px));
+            overflow-y: auto;
+            box-sizing: border-box;
             background: #e6dfcc;
             background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
             border: 4px solid #000;
             border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: clamp(8px, 1.2vh, 14px);
             box-shadow: 8px 8px 0px rgba(0,0,0,0.6);
-            width: 200px;
         }
+        #debug-menu.open { display: block; }
 
-        #debug-menu h3 { margin: 0 0 10px 0; border-bottom: 2px dashed #000; padding-bottom: 5px; text-align: center; font-size: 16px;}
-        #debug-menu button {
-            display: block; width: 100%; margin-bottom: 6px; padding: 6px;
-            background: #fff; border: 2px solid #000; font-family: 'Special Elite', monospace;
-            font-weight: bold; cursor: pointer; transition: 0.2s; border-radius: 4px;
+        #debug-menu h3 {
+            margin: 0 0 6px 0; border-bottom: 2px dashed #000; padding-bottom: 3px;
+            text-align: center; font-size: clamp(11px, min(1vw, 1.8vh), 15px); letter-spacing: 1px;
         }
-        #debug-menu button:hover { background: #1a1a1a; color: #fff; transform: translateX(-3px); box-shadow: 4px 4px 0px rgba(0,0,0,0.4); }
-        
-        .debug-resume { background: #d9534f !important; color: #fff; border-color: #000 !important; margin-top: 10px; }
+        #debug-menu h3:not(:first-child) { margin-top: 10px; }
+        .debug-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        #debug-menu button {
+            display: block; width: 100%; margin: 0; padding: clamp(3px, 0.6vh, 6px) 4px;
+            background: #fff; border: 2px solid #000; font-family: 'Special Elite', monospace;
+            font-size: clamp(10px, min(0.8vw, 1.5vh), 13px);
+            font-weight: bold; cursor: pointer; transition: 0.2s; border-radius: 4px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        #debug-menu button:hover { background: #1a1a1a; color: #fff; box-shadow: 3px 3px 0px rgba(0,0,0,0.4); }
+        #debug-menu button.active { background: #1a1a1a; color: #f4eedd; }
+
+        .debug-resume { background: #d9534f !important; color: #fff; border-color: #000 !important; margin-top: 10px !important; }
         .debug-resume:hover { background: #c9302c !important; }
 
         #debug-gear {
-            width: 50px; height: 50px; background: #e6dfcc; border: 4px solid #000;
+            width: clamp(36px, min(3vw, 6vh), 50px); height: clamp(36px, min(3vw, 6vh), 50px);
+            background: #e6dfcc; border: 4px solid #000;
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            font-size: 28px; cursor: pointer; box-shadow: 6px 6px 0px rgba(0,0,0,0.6);
+            font-size: clamp(20px, min(1.7vw, 3.4vh), 28px); cursor: pointer; box-shadow: 6px 6px 0px rgba(0,0,0,0.6);
             transition: transform 0.3s ease;
         }
         #debug-gear:hover { transform: rotate(45deg) scale(1.1); }
@@ -347,21 +361,30 @@
 
             <div id="debug-container">
                 <div id="debug-menu">
-                    <h3>Weather Tester</h3>
-                    <button onclick="forceWeather(85, 'clear')">☀️ Heatwave (85°)</button>
-                    <button onclick="forceWeather(75, 'clear')">⛅ Warm (75°)</button>
-                    <button onclick="forceWeather(65, 'clear')">☁️ Mild (65°)</button>
-                    <button onclick="forceWeather(45, 'clear')">🧥 Chilly (45°)</button>
-                    <button onclick="forceWeather(20, 'clear')">🥶 Freezing (20°)</button>
-                    <hr style="border: 1px solid #000; margin: 10px 0;">
-                    <button onclick="forceWeather(50, 'rain')">🌧️ Rain</button>
-                    <button onclick="forceWeather(25, 'snow')">❄️ Snow</button>
-                    <button onclick="forceWeather(40, 'hail')">🧊 Hail</button>
-                    <button onclick="forceWeather(55, 'fog')">🌫️ Fog</button>
-                    <button onclick="forceWeather(70, 'tornado')">🌪️ Tornado</button>
+                    <h3>Art Style</h3>
+                    <div class="debug-grid">
+                        <button id="art-classic" onclick="setArtStyle('classic')">🖼️ Classic</button>
+                        <button id="art-redrawn" onclick="setArtStyle('redrawn')">✏️ Redrawn</button>
+                    </div>
+                    <h3>Temperature</h3>
+                    <div class="debug-grid">
+                        <button onclick="forceWeather(85, 'clear')">☀️ Heat 85°</button>
+                        <button onclick="forceWeather(75, 'clear')">⛅ Warm 75°</button>
+                        <button onclick="forceWeather(65, 'clear')">☁️ Mild 65°</button>
+                        <button onclick="forceWeather(45, 'clear')">🧥 Chilly 45°</button>
+                        <button onclick="forceWeather(20, 'clear')">🥶 Freeze 20°</button>
+                    </div>
+                    <h3>Weather</h3>
+                    <div class="debug-grid">
+                        <button onclick="forceWeather(50, 'rain')">🌧️ Rain</button>
+                        <button onclick="forceWeather(25, 'snow')">❄️ Snow</button>
+                        <button onclick="forceWeather(40, 'hail')">🧊 Hail</button>
+                        <button onclick="forceWeather(55, 'fog')">🌫️ Fog</button>
+                        <button onclick="forceWeather(70, 'tornado')">🌪️ Tornado</button>
+                    </div>
                     <button class="debug-resume" onclick="resumeLiveWeather()">🔄 Resume Live</button>
                 </div>
-                <div id="debug-gear" onclick="toggleDebugMenu()" title="Toggle Weather Testing">⚙️</div>
+                <div id="debug-gear" onclick="toggleDebugMenu()" title="Settings">⚙️</div>
             </div>
         </div>
 
@@ -422,18 +445,61 @@
     </div>
 
     <script>
-        const ASSETS = {
-            bgChilly: "Background_35-59°F (Chilly).jpeg",
-            bgMild: "Background_60-69°F (Mild).jpeg",
-            bgWarm: "Background_70-79°F (Warm).jpg",
-            bgHeatwave: "Background_80°F+ (Heatwave).png", 
-            charFreezing: "Character Sprite_35°F (Freezing).png",
-            charChilly: "Character Sprite_35-59°F (Chilly).png",
-            charMild: "Character Sprite_60-69°F (Mild).png",
-            charWarm: "Character Sprite_70-79°F (Warm).png",
-            charHeatwave: "Character Sprite_80°F+ (Heatwave).png",
-            overlayHail: "Weather Overlay_Hail.png"
+        const ASSET_SETS = {
+            classic: {
+                bgFreezing: "Background_35-59°F (Chilly).jpeg",
+                bgChilly: "Background_35-59°F (Chilly).jpeg",
+                bgMild: "Background_60-69°F (Mild).jpeg",
+                bgWarm: "Background_70-79°F (Warm).jpg",
+                bgHeatwave: "Background_80°F+ (Heatwave).png",
+                charFreezing: "Character Sprite_35°F (Freezing).png",
+                charChilly: "Character Sprite_35-59°F (Chilly).png",
+                charMild: "Character Sprite_60-69°F (Mild).png",
+                charWarm: "Character Sprite_70-79°F (Warm).png",
+                charHeatwave: "Character Sprite_80°F+ (Heatwave).png",
+                overlayRain: "Weather Overlay_Rain.png",
+                overlaySnow: "Weather Overlay_Snow.png",
+                overlayHail: "Weather Overlay_Hail.png",
+                overlayTornado: "Weather Overlay_Tornado.png"
+            },
+            // Hand-drawn SVG set — regenerate with: python3 tools/draw_v2.py
+            redrawn: {
+                bgFreezing: "assets/v2/bg-freezing.svg",
+                bgChilly: "assets/v2/bg-chilly.svg",
+                bgMild: "assets/v2/bg-mild.svg",
+                bgWarm: "assets/v2/bg-warm.svg",
+                bgHeatwave: "assets/v2/bg-heatwave.svg",
+                charFreezing: "assets/v2/char-freezing.svg",
+                charChilly: "assets/v2/char-chilly.svg",
+                charMild: "assets/v2/char-mild.svg",
+                charWarm: "assets/v2/char-warm.svg",
+                charHeatwave: "assets/v2/char-heatwave.svg",
+                overlayRain: "assets/v2/overlay-rain.svg",
+                overlaySnow: "assets/v2/overlay-snow.svg",
+                overlayHail: "assets/v2/overlay-hail.svg",
+                overlayTornado: "assets/v2/overlay-tornado.svg"
+            }
         };
+
+        let artStyle = 'classic';
+        try { if (localStorage.getItem('artStyle') === 'redrawn') artStyle = 'redrawn'; } catch (e) {}
+        let ASSETS = ASSET_SETS[artStyle];
+        let lastRender = null; // [temp, desc, isTest] so a style switch can redraw the current scene
+
+        function updateArtButtons() {
+            document.getElementById('art-classic').classList.toggle('active', artStyle === 'classic');
+            document.getElementById('art-redrawn').classList.toggle('active', artStyle === 'redrawn');
+        }
+
+        function setArtStyle(style) {
+            if (!ASSET_SETS[style]) return;
+            artStyle = style;
+            ASSETS = ASSET_SETS[style];
+            try { localStorage.setItem('artStyle', style); } catch (e) {}
+            updateArtButtons();
+            if (lastRender) renderDashboardState(...lastRender);
+        }
+        updateArtButtons();
 
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
@@ -617,6 +683,7 @@
         }
 
         function renderDashboardState(temp, weatherDesc, isTest = false) {
+            lastRender = [temp, weatherDesc, isTest];
             document.getElementById('temp-display').innerText = temp + (isTest ? '°F (TEST)' : '°F');
             document.getElementById('desc-display').innerText = weatherDesc;
 
@@ -636,7 +703,7 @@
                 bgFile = ASSETS.bgChilly;
                 charFile = ASSETS.charChilly;
             } else {
-                bgFile = ASSETS.bgChilly; 
+                bgFile = ASSETS.bgFreezing;
                 charFile = ASSETS.charFreezing;
             }
 
@@ -654,22 +721,22 @@
             
             if (descStr.includes('tornado')) {
                 weatherType = 'debris';
-                spawnEntity(overlayLayer, 'Weather Overlay_Tornado.png', -10, 1.4, 2.5, 'tornado');
-                spawnEntity(overlayLayer, 'Weather Overlay_Tornado.png', 5, 0.9, 1.8, 'tornado');
-                spawnEntity(overlayLayer, 'Weather Overlay_Tornado.png', -5, 1.8, 3.2, 'tornado');
+                spawnEntity(overlayLayer, ASSETS.overlayTornado, -10, 1.4, 2.5, 'tornado');
+                spawnEntity(overlayLayer, ASSETS.overlayTornado, 5, 0.9, 1.8, 'tornado');
+                spawnEntity(overlayLayer, ASSETS.overlayTornado, -5, 1.8, 3.2, 'tornado');
                 initParticles('debris');
                 
             } else if (descStr.includes('rain')) {
                 weatherType = 'rain';
-                spawnEntity(overlayLayer, 'Weather Overlay_Rain.png', -5, 0.7, 0.6, 'cloud');
-                spawnEntity(overlayLayer, 'Weather Overlay_Rain.png', 2, 0.5, 0.4, 'cloud');
-                spawnEntity(overlayLayer, 'Weather Overlay_Rain.png', -10, 0.85, 0.8, 'cloud');
+                spawnEntity(overlayLayer, ASSETS.overlayRain, -5, 0.7, 0.6, 'cloud');
+                spawnEntity(overlayLayer, ASSETS.overlayRain, 2, 0.5, 0.4, 'cloud');
+                spawnEntity(overlayLayer, ASSETS.overlayRain, -10, 0.85, 0.8, 'cloud');
                 initParticles('rain');
                 
             } else if (descStr.includes('snow')) {
                 weatherType = 'snow';
-                spawnEntity(overlayLayer, 'Weather Overlay_Snow.png', -5, 0.75, 0.5, 'cloud');
-                spawnEntity(overlayLayer, 'Weather Overlay_Snow.png', -2, 0.55, 0.3, 'cloud');
+                spawnEntity(overlayLayer, ASSETS.overlaySnow, -5, 0.75, 0.5, 'cloud');
+                spawnEntity(overlayLayer, ASSETS.overlaySnow, -2, 0.55, 0.3, 'cloud');
                 initParticles('snow');
                 
             } else if (descStr.includes('hail')) {
@@ -692,6 +759,7 @@
                 if (!response.ok) throw new Error('Data Sync Missing');
                 
                 const data = await response.json();
+                if (isTestingMode) return; // a test button was pressed while this fetch was in flight
                 errorDisplay.innerText = '';
                 renderDashboardState(parseInt(data.temp), data.weather, false);
 
@@ -704,8 +772,7 @@
         setInterval(fetchLiveDashboard, 60000);
 
         function toggleDebugMenu() {
-            const menu = document.getElementById('debug-menu');
-            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+            document.getElementById('debug-menu').classList.toggle('open');
         }
 
         function forceWeather(temp, desc) {
@@ -722,7 +789,7 @@
             document.getElementById('error-display').style.borderTopColor = '#cc0000';
             document.getElementById('error-display').innerText = '';
             document.getElementById('temp-display').innerText = 'WAITING...';
-            document.getElementById('debug-menu').style.display = 'none';
+            document.getElementById('debug-menu').classList.remove('open');
             fetchLiveDashboard(); 
         }
 

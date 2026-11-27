@@ -527,7 +527,7 @@
                     const tornados = weatherEntities.filter(e => e.type === 'tornado');
                     if (tornados.length > 0) {
                         const t = tornados[Math.floor(Math.random() * tornados.length)];
-                        const tWidth = canvas.width * (t.scale * 0.25); 
+                        const tWidth = t.w;
                         this.x = t.x + (tWidth / 2) + (Math.random() * 100 - 50);
                         this.y = canvas.height + (Math.random() * 50);
                         this.speed = -(Math.random() * 12 + 4); 
@@ -540,11 +540,11 @@
                     const clouds = weatherEntities.filter(e => e.type === 'cloud');
                     if (clouds.length > 0) {
                         const c = clouds[Math.floor(Math.random() * clouds.length)];
-                        const cWidth = (canvas.width / 100) * (25 * c.scale);
+                        const cWidth = c.w;
                         this.x = c.x + (Math.random() * cWidth);
                         
-                        const cloudTopPx = (parseFloat(c.el.style.top) / 100) * canvas.height;
-                        const cloudBottomPx = cloudTopPx + (canvas.height * 0.15 * c.scale); 
+                        const cloudTopPx = Math.max(0, c.top + c.w * 0.3);
+                        const cloudBottomPx = c.top + c.w * 0.55; // underside of the cloud art
 
                         if (isInit) {
                             this.y = cloudTopPx + (Math.random() * (canvas.height - cloudTopPx));
@@ -631,8 +631,8 @@
             
             weatherEntities.forEach(ent => {
                 ent.x += ent.speed;
-                if (ent.x > window.innerWidth + 300) {
-                    ent.x = -400; 
+                if (ent.x > canvas.width + 50) {
+                    ent.x = -ent.w - 50;
                 }
                 ent.el.style.transform = `translateX(${ent.x}px)`;
             });
@@ -661,26 +661,37 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        function spawnEntity(layer, src, yPos, scale, speed, type) {
-            let img = document.createElement('img');
+        /* Weather art is sized from the STAGE HEIGHT (not viewport width), so clouds and
+           tornados stay in proportion to the scene on any screen shape.
+             size  = art width as a fraction of stage height
+             yPos  = top edge as a fraction of stage height (clouds)
+           Tornados ignore yPos and stand on the ground. Narrow screens cap the width. */
+        const ENTITY_MAX_WIDTH = { cloud: 0.3, tornado: 0.38 }; // fraction of stage width
+
+        function layoutEntity(ent) {
+            const stageH = canvas.height, stageW = canvas.width;
+            ent.w = Math.round(Math.min(ent.size * stageH, ENTITY_MAX_WIDTH[ent.type] * stageW));
+            ent.top = ent.type === 'tornado'
+                ? Math.round(stageH - ent.w * 0.97)   // funnel tip touches the ground
+                : Math.round(ent.yPos * stageH);
+            ent.el.style.width = ent.w + 'px';
+            ent.el.style.top = ent.top + 'px';
+        }
+
+        function spawnEntity(layer, src, yPos, size, speed, type) {
+            const img = document.createElement('img');
             img.src = src;
             img.className = 'floating-overlay';
-            img.style.width = Math.floor(25 * scale) + 'vw';
-            img.style.top = yPos + '%';
-            
-            let startX = Math.random() * window.innerWidth;
-            img.style.transform = `translateX(${startX}px)`;
-            
             layer.appendChild(img);
-            
-            weatherEntities.push({
-                el: img,
-                x: startX,
-                speed: speed,
-                scale: scale,
-                type: type
-            });
+
+            const ent = { el: img, x: 0, yPos, size, speed, type, w: 0, top: 0 };
+            layoutEntity(ent);
+            ent.x = Math.random() * (canvas.width - ent.w * 0.5);
+            img.style.transform = `translateX(${ent.x}px)`;
+            weatherEntities.push(ent);
         }
+
+        window.addEventListener('resize', () => weatherEntities.forEach(layoutEntity));
 
         function renderDashboardState(temp, weatherDesc, isTest = false) {
             lastRender = [temp, weatherDesc, isTest];
@@ -721,28 +732,28 @@
             
             if (descStr.includes('tornado')) {
                 weatherType = 'debris';
-                spawnEntity(overlayLayer, ASSETS.overlayTornado, -10, 1.4, 2.5, 'tornado');
-                spawnEntity(overlayLayer, ASSETS.overlayTornado, 5, 0.9, 1.8, 'tornado');
-                spawnEntity(overlayLayer, ASSETS.overlayTornado, -5, 1.8, 3.2, 'tornado');
+                spawnEntity(overlayLayer, ASSETS.overlayTornado, 0, 0.62, 2.5, 'tornado');
+                spawnEntity(overlayLayer, ASSETS.overlayTornado, 0, 0.46, 1.8, 'tornado');
+                spawnEntity(overlayLayer, ASSETS.overlayTornado, 0, 0.75, 3.2, 'tornado');
                 initParticles('debris');
                 
             } else if (descStr.includes('rain')) {
                 weatherType = 'rain';
-                spawnEntity(overlayLayer, ASSETS.overlayRain, -5, 0.7, 0.6, 'cloud');
-                spawnEntity(overlayLayer, ASSETS.overlayRain, 2, 0.5, 0.4, 'cloud');
-                spawnEntity(overlayLayer, ASSETS.overlayRain, -10, 0.85, 0.8, 'cloud');
+                spawnEntity(overlayLayer, ASSETS.overlayRain, -0.08, 0.5, 0.6, 'cloud');
+                spawnEntity(overlayLayer, ASSETS.overlayRain, -0.02, 0.38, 0.4, 'cloud');
+                spawnEntity(overlayLayer, ASSETS.overlayRain, -0.12, 0.6, 0.8, 'cloud');
                 initParticles('rain');
                 
             } else if (descStr.includes('snow')) {
                 weatherType = 'snow';
-                spawnEntity(overlayLayer, ASSETS.overlaySnow, -5, 0.75, 0.5, 'cloud');
-                spawnEntity(overlayLayer, ASSETS.overlaySnow, -2, 0.55, 0.3, 'cloud');
+                spawnEntity(overlayLayer, ASSETS.overlaySnow, -0.08, 0.52, 0.5, 'cloud');
+                spawnEntity(overlayLayer, ASSETS.overlaySnow, -0.04, 0.4, 0.3, 'cloud');
                 initParticles('snow');
                 
             } else if (descStr.includes('hail')) {
                 weatherType = 'hail';
-                spawnEntity(overlayLayer, ASSETS.overlayHail, -8, 0.85, 0.7, 'cloud');
-                spawnEntity(overlayLayer, ASSETS.overlayHail, 0, 0.6, 0.5, 'cloud');
+                spawnEntity(overlayLayer, ASSETS.overlayHail, -0.1, 0.58, 0.7, 'cloud');
+                spawnEntity(overlayLayer, ASSETS.overlayHail, -0.02, 0.42, 0.5, 'cloud');
                 initParticles('hail');
                 
             } else if (descStr.includes('fog') || descStr.includes('mist')) {
